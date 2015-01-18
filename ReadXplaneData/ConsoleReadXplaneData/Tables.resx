@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreateAirportMapLocationIDIndex" xml:space="preserve">
+    <value>create index airports_maplocationid_index
+            on tbl_Airports(MapLocation_ID);</value>
+  </data>
+  <data name="CreateAirportTable" xml:space="preserve">
+    <value>create table tbl_Airports (_id integer primary key autoincrement,
+            id integer, 
+            ident text,
+            type text, 
+            name text,
+            latitude_deg real,
+            longitude_deg real,
+            elevation_ft real,
+            continent text,
+            iso_country text,
+            iso_region text,
+            municipality text,
+            scheduled_service text,
+            gps_code text,
+            iata_code text,
+            local_code text,
+            home_link text,
+            wikipedia_link text,
+            keywords text,
+            Version integer,
+            Modified datetime,
+            MapLocation_ID integer,
+            pid integer);</value>
+  </data>
+  <data name="CreateAndroidMetadata" xml:space="preserve">
+    <value>CREATE TABLE "android_metadata" ("locale" TEXT DEFAULT 'en_US')</value>
+  </data>
+  <data name="CreateContinentTable" xml:space="preserve">
+    <value>create table tbl_Continent (_id integer primary key autoincrement,
+            id integer,
+            name text,
+            code text);</value>
+  </data>
+  <data name="CreateCountryTable" xml:space="preserve">
+    <value>create table tbl_Country (_id integer primary key autoincrement,
+            id integer,
+            code text,
+            name text,
+            continent text,
+            wikipedia_link text,
+            keywords text);</value>
+  </data>
+  <data name="CreateFixesLocationIndex" xml:space="preserve">
+    <value>create index fixes_location_index
+            on tbl_Fixes(
+            latitude_deg,
+            longitude_deg);</value>
+  </data>
+  <data name="CreateFixesMapLocationIDIndex" xml:space="preserve">
+    <value>create index fixes_maplocationid_index
+            on tbl_Fixes(MapLocation_ID);</value>
+  </data>
+  <data name="CreateFixesNameIndex" xml:space="preserve">
+    <value>create index navaids_name_index
+            on tbl_Fixes(
+            name);</value>
+  </data>
+  <data name="CreateFixesTable" xml:space="preserve">
+    <value>create table tbl_Fixes(_id integer primary key autoincrement, name text,
+            ident text, latitude_deg real,
+            longitude_deg real,
+            MapLocation_ID integer,
+            pid integer);</value>
+  </data>
+  <data name="CreateFrequenciesAirportIdentIndex" xml:space="preserve">
+    <value>create index airport_frequencies_airport_ref on
+tbl_AirportFrequencies (airport_ref, airport_ident);</value>
+  </data>
+  <data name="CreateFrequenciesTable" xml:space="preserve">
+    <value>create table tbl_AirportFrequencies(_id integer primary key autoincrement,
+      id integer,
+      airport_ref integer,
+      airport_ident text,
+      type text,
+      description text,
+      frequency_mhz real);</value>
+  </data>
+  <data name="CreateLocationAirportTableIndex" xml:space="preserve">
+    <value>create index location_index
+            on tbl_Airports (
+            latitude_deg,
+            longitude_deg);</value>
+  </data>
+  <data name="CreateNameIdentAirportTableIndex" xml:space="preserve">
+    <value>create index name_ident_index 
+            on tbl_Airports (
+            id, 
+            name, 
+            ident);</value>
+  </data>
+  <data name="CreateNavaidsIdentNameIndex" xml:space="preserve">
+    <value>create index navaids_ident_name_index on tbl_Navaids (ident, name);</value>
+  </data>
+  <data name="CreateNavaidsLocationIndex" xml:space="preserve">
+    <value>create index navaids_location_index on tbl_Navaids(latitude_deg, longitude_deg);</value>
+  </data>
+  <data name="CreateNavAidsMapLocationIdIndex" xml:space="preserve">
+    <value>create index navaids_maplocationid_index
+            on tbl_Navaids(MapLocation_ID);</value>
+  </data>
+  <data name="CreateNavaidsTable" xml:space="preserve">
+    <value>create table tbl_Navaids (_id integer primary key autoincrement,
+id integer,
+filename text,
+ident text,
+name text,
+type text,
+frequency_khz real,
+latitude_deg real,
+longitude_deg real,
+elevation_ft integer,
+iso_country text,
+dme_frequency_khz real,
+dme_channel real,
+dme_latitude_deg real,
+dme_longitude_deg real,
+dme_elevation_ft integer,
+slaved_variation_deg real,
+magnetic_variation_deg real,
+usageType text,
+power text,
+associated_airport text,
+associated_airport_id integer,
+MapLocation_ID integer,
+pid integer);</value>
+  </data>
+  <data name="CreateRegionsTable" xml:space="preserve">
+    <value>create table tbl_Region (_id integer primary key autoincrement,
+            id integer,
+            code text, 
+            local_code text, name text,
+            continent text, iso_country text,
+            wikipedia_link text,
+            keywords text);</value>
+  </data>
+  <data name="CreateRunwaysAirportHELocationIndex" xml:space="preserve">
+    <value>create index runway_helocation_index 
+            on tbl_Runways (
+            he_latitude_deg,
+            he_longitude_deg
+            );</value>
+  </data>
+  <data name="CreateRunwaysAirportIdentIndex" xml:space="preserve">
+    <value>create index runway_airportident_index
+            on tbl_Runways  (
+            airport_ident, 
+            airport_ref
+            );</value>
+  </data>
+  <data name="CreateRunwaysAirportLELocationIndex" xml:space="preserve">
+    <value>create index runway_lelocation_index 
+            on tbl_Runways (
+            le_latitude_deg,
+            le_longitude_deg
+            );</value>
+  </data>
+  <data name="CreateRunwaysTable" xml:space="preserve">
+    <value>create table tbl_Runways (_id integer primary key autoincrement, id integer,
+            airport_ref integer,
+            airport_ident text,
+            length_ft integer,
+            width_ft  integer, lighted integer, closed integer,
+            surface  text,
+            le_ident  text,
+            le_latitude_deg  real,
+            le_longitude_deg  real,
+            le_elevation_ft  integer,
+            le_heading_degT real,
+            le_displaced_threshold_ft integer,
+            he_ident text,
+            he_latitude_deg  real,
+            he_longitude_deg  real,
+            he_elevation_ft  integer, 
+            he_heading_degT  real, 
+            he_displaced_threshold_ft  integer);</value>
+  </data>
+  <data name="CreateTableProperties" xml:space="preserve">
+    <value>create table tbl_Properties (_id integer primary key autoincrement,
+name text,
+value1 text,
+value2 text);</value>
+  </data>
+  <data name="DropFixesLocationIndex" xml:space="preserve">
+    <value>drop index navaids_location_index;</value>
+  </data>
+  <data name="DropFixesNameIndex" xml:space="preserve">
+    <value>drop index navaids_name_index;</value>
+  </data>
+  <data name="DropFrequenciesAirportIdentIndex" xml:space="preserve">
+    <value>drop index airport_frequencies_airport_ref;</value>
+  </data>
+  <data name="DropLocationAirportTableIndex" xml:space="preserve">
+    <value>drop index location_index;</value>
+  </data>
+  <data name="DropNameIdentAirportTableIndex" xml:space="preserve">
+    <value>drop index name_ident_index;</value>
+  </data>
+  <data name="DropNavaidsIdentNameIndex" xml:space="preserve">
+    <value>drop index navaids_ident_name_index;</value>
+  </data>
+  <data name="DropNavaidsLocationIndex" xml:space="preserve">
+    <value>drop index navaids_location_index;</value>
+  </data>
+  <data name="InsertAndroidMetadata" xml:space="preserve">
+    <value>INSERT INTO "android_metadata" VALUES ('en_US');</value>
+  </data>
+  <data name="InsertProperties" xml:space="preserve">
+    <value>insert into tbl_Properties(name, value1, value2) values("DB_VERSION", "7", "2014-09-20");
+</value>
+  </data>
+</root>
