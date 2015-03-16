@@ -17,6 +17,8 @@ namespace ConsoleReadXplaneData
             log = LogManager.GetCurrentClassLogger();
         }
 
+
+
         public static Boolean CreateDatabase(string databaseFilename)
         {
             CreateLogger();
@@ -34,6 +36,24 @@ namespace ConsoleReadXplaneData
             return true;
         }
 
+        private static SQLiteConnection GetSpatialConnection(String database)
+        {
+            CreateLogger();
+            SQLiteConnection connection;
+            connection = new SQLiteConnection("Data Source=" + database + ";Version=3;");
+            connection.Open(); // load the extension 
+
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                //Load the libspatialite library extension - *.dll on windows, *.a on iOS
+                command.CommandText = "SELECT load_extension('libspatialite-2.dll');";
+                command.ExecuteNonQuery(); // Run queries here
+                log.Info("libspatiallite-2.dll loaded!");
+            }
+            
+            return connection;
+        }
+
         private static SQLiteConnection GetConnection(string databaseFilename)
         {
             CreateLogger();
@@ -43,15 +63,17 @@ namespace ConsoleReadXplaneData
 
         public static void CreateTables(string databaseFilename)
         {
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
 
             try
             {
-                con.Open();
+                con = GetSpatialConnection(databaseFilename);
 
-                string q = "DROP TABLE IF EXISTS tbl_Airports";
+                string q = "SELECT InitSpatialMetaData();";
+                ExecuteQuery(con, q);
+                q = "DROP TABLE IF EXISTS tbl_Airports";
                 ExecuteQuery(con, q);
                 q = "DROP TABLE IF EXISTS tbl_Country";
                 ExecuteQuery(con, q);
@@ -74,6 +96,8 @@ namespace ConsoleReadXplaneData
 
                 q = Tables.CreateAirportTable;
                 ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Airports', 'position', 4326, 'POINT',2);";
+                ExecuteQuery(con, q);
                 q = Tables.CreateContinentTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateCountryTable;
@@ -95,7 +119,7 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con != null) con.Close();
 
                 log.Info("Connection closed");
             }
@@ -103,13 +127,13 @@ namespace ConsoleReadXplaneData
 
         public static void CreateAndriodTable(string databaseFilename)
         {
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
 
             try
             {
-                con.Open();
+                con = con = GetSpatialConnection(databaseFilename);
                 string q = Tables.CreateAndroidMetadata;
                 ExecuteQuery(con, q);
                 q = Tables.InsertAndroidMetadata;
@@ -122,7 +146,7 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con != null) con.Close();
 
                 log.Info("Connection closed");
             }
@@ -130,13 +154,13 @@ namespace ConsoleReadXplaneData
 
         public static void CreatePropertiesTable(string databaseFilename)
         {
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
 
             try
             {
-                con.Open();
+                con = GetSpatialConnection(databaseFilename);
                 string q = Tables.CreateTableProperties;
                 ExecuteQuery(con, q);
                 q = Tables.InsertProperties;
@@ -149,7 +173,7 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con != null) con.Close();
 
                 log.Info("Connection closed");
             }
@@ -157,13 +181,13 @@ namespace ConsoleReadXplaneData
 
         public static void CreateTableIndexen(string databaseFilename)
         {
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
 
             try
             {
-                con.Open();
+                con = GetSpatialConnection(databaseFilename);
                 string q = Tables.CreateLocationAirportTableIndex;
                 ExecuteQuery(con, q);
                 q = Tables.CreateNameIdentAirportTableIndex;
@@ -197,7 +221,7 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con != null) con.Close();
 
                 log.Info("Connection closed");
             }
@@ -231,9 +255,22 @@ namespace ConsoleReadXplaneData
             SQLiteCommand cmd = new SQLiteCommand(q);
             foreach (DataColumn C in table.Columns)
             {
-                cmd.Parameters.AddWithValue("@" + C.ColumnName.Replace(@"""", ""),
-                    row[C.ColumnName.Replace(@"""", "")]);
+                if (C.ColumnName.Replace(@"""", "") == "position")
+                {
+                    string value = "GeomFromText('POINT(10,10)', 4326)";
+                    cmd.Parameters.AddWithValue("@" + C.ColumnName.Replace(@"""", ""),
+                        value);
+                }
+                else
+                {
+                    Object value = row[C.ColumnName.Replace(@"""", "")];
+                    cmd.Parameters.AddWithValue("@" + C.ColumnName.Replace(@"""", ""),
+                        value);
+
+                }
             }
+
+            //log.Debug(cmd);
 
             return cmd;
         }
@@ -259,14 +296,44 @@ namespace ConsoleReadXplaneData
             }
         }
 
+        public static void AddgeomPoint(String tablename, String databaseName)
+        {
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
+            CreateLogger();
+            log.Info("Start creating database tables");
+
+            //GeomFromText ('POINT(10.01 10.02)', 4326)
+            // UPDATE tbl_Airports SET position = GeomFromText('POINT(' + CAST(latitude_deg as text) + ',' + CAST(longitude_deg as text) +  '), 4326)');
+            log.Info("Updating position column for: {0}", tablename);
+            try
+            {
+                con = GetSpatialConnection(databaseName);
+                String q = "UPDATE " + tablename + " SET position = GeomFromText('POINT(CAST(latitude_deg as text),CAST(longitude_deg as text))', 4326)";
+                log.Debug("position SQL {0}", q);
+                SQLiteCommand cmd = new SQLiteCommand(q, con);
+
+                cmd.ExecuteNonQuery();
+                log.Info("position for: {0} is updated!!", tablename);
+            }
+            catch (Exception ee)
+            {
+                log.Error("Error updating position for {0} Error: {1}", tablename, ee.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+        }
+
         public static void InsertFixTableIntoDatabase(DataTable table, String databaseFilename)
         {
             String tableName = "tbl_Fixes";
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
 
             try
             {
-                con.Open();
+                con = GetSpatialConnection(databaseFilename);
                 CreateLogger();
                 float count = table.Rows.Count;
                 float pos = 0;
@@ -299,20 +366,27 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con != null) con.Close();
             }
         }   
 
         public static void InsertTableIntoDatabase(DataTable table, String tableName, String databaseFilename, List<string> mapLocations)
         {
-            SQLiteConnection con = GetConnection(databaseFilename);
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
 
             try
             {
-                con.Open();
                 CreateLogger();
+                con = GetSpatialConnection(databaseFilename);
+                
                 float count = table.Rows.Count;
                 float pos = 0;
+
+                if (tableName == "tbl_Airports")
+                {
+                    DataColumn c = new DataColumn("position");
+                    table.Columns.Add(c);
+                }
 
                 foreach (DataRow R in table.Rows)
                 {
@@ -335,7 +409,7 @@ namespace ConsoleReadXplaneData
             }
             finally
             {
-                con.Close();
+                if (con!=null) con.Close();
             }
         }
     }

@@ -9,3 +9,14 @@ C:\Users\Rob Verhoef\documents\visual studio 2010\Projects\ReadXplaneData\Consol
 C:\Users\Rob Verhoef\documents\visual studio 2010\Projects\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.xml
 C:\Users\Rob Verhoef\documents\visual studio 2010\Projects\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csprojResolveAssemblyReference.cache
 C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.urls.resources
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.config
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.pdb
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.dll
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.xml
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csprojResolveAssemblyReference.cache
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.Tables.resources
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.urls.resources
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.GenerateResource.Cache
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.exe
+C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.pdb
