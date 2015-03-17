@@ -14,6 +14,7 @@ namespace ConsoleReadXplaneData
         fixes,
         navaids,
         regions,
-        runways
+        runways,
+        test
     }
 }

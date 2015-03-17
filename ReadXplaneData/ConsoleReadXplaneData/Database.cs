@@ -257,7 +257,7 @@ namespace ConsoleReadXplaneData
             {
                 if (C.ColumnName.Replace(@"""", "") == "position")
                 {
-                    string value = "GeomFromText('POINT(10,10)', 4326)";
+                    string value = "GeomFromText('POINT(1.01 2.02)', 4326)";
                     cmd.Parameters.AddWithValue("@" + C.ColumnName.Replace(@"""", ""),
                         value);
                 }
@@ -296,19 +296,42 @@ namespace ConsoleReadXplaneData
             }
         }
 
+        public static void testInsert(String tablename, String databaseName)
+        {
+            SQLiteConnection con = null;// = GetConnection(databaseFilename);
+            CreateLogger();
+
+            try
+            {
+                con = GetSpatialConnection(databaseName);
+                String q = "INSERT INTO tbl_Airports (id, ident, position) VALUES (NULL, 'EHLE', GeomFromText('POINT(1.01 2.02)', 4326));";
+                SQLiteCommand cmd = new SQLiteCommand(q, con);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ee)
+            {
+                log.Error("Error test {0} Error: {1}", tablename, ee.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
         public static void AddgeomPoint(String tablename, String databaseName)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
 
-            //GeomFromText ('POINT(10.01 10.02)', 4326)
-            // UPDATE tbl_Airports SET position = GeomFromText('POINT(' + CAST(latitude_deg as text) + ',' + CAST(longitude_deg as text) +  '), 4326)');
+            // UPDATE tbl_Airports SET position = GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326);
+            // SELECT CreateSpatialIndex('tbl_Airports', 'position')
             log.Info("Updating position column for: {0}", tablename);
             try
             {
                 con = GetSpatialConnection(databaseName);
-                String q = "UPDATE " + tablename + " SET position = GeomFromText('POINT(CAST(latitude_deg as text),CAST(longitude_deg as text))', 4326)";
+                String q = "UPDATE " + tablename + " SET position = GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326)";
                 log.Debug("position SQL {0}", q);
                 SQLiteCommand cmd = new SQLiteCommand(q, con);
 
@@ -382,11 +405,11 @@ namespace ConsoleReadXplaneData
                 float count = table.Rows.Count;
                 float pos = 0;
 
-                if (tableName == "tbl_Airports")
-                {
-                    DataColumn c = new DataColumn("position");
-                    table.Columns.Add(c);
-                }
+                //if (tableName == "tbl_Airports")
+                //{
+                //    DataColumn c = new DataColumn("position");
+                //    table.Columns.Add(c);
+                //}
 
                 foreach (DataRow R in table.Rows)
                 {

@@ -11,7 +11,7 @@ namespace ConsoleReadXplaneData
     class Program
     {
         static string databaseFilename = "airnav.db";
-        static string filesPath = @"C:\Users\Rob Verhoef\Documents\NavAirDataFiles\";
+        static string filesPath = @"data\";
         static List<string> mapLocationList;
         static Logger log;
 
@@ -36,10 +36,11 @@ namespace ConsoleReadXplaneData
                     //,ImportTypes.navaids
                     //,ImportTypes.regions
                     //,ImportTypes.runways
+                    //ImportTypes.test
                 };
 
-                //Database.CreateDatabase(databaseFilename);
-                //Database.CreateTables(databaseFilename);
+                Database.CreateDatabase(databaseFilename);
+                Database.CreateTables(databaseFilename);
 
                 mapLocationList = new List<string>();
 
@@ -181,6 +182,12 @@ namespace ConsoleReadXplaneData
                     Database.InsertTableIntoDatabase(frequenciesTable, "tbl_AirportFrequencies", databaseFilename, mapLocationList);
                     log.Info("Frequencies inserted in database!");
                     log.Info("*********************************************");
+                }
+
+                if (importTypes.Contains(ImportTypes.test))
+                {
+                    log.Info("start test insert");
+                    Database.testInsert("tbl_Airports", databaseFilename);
                 }
 
                 Database.CreateTableIndexen(databaseFilename);
