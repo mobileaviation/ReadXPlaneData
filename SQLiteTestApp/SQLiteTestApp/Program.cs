@@ -12,8 +12,8 @@ namespace SQLiteTestApp
         {
             Console.WriteLine("SQLite Spatial DB test");
 
-            //SQLiteConnection.CreateFile("test.sqlite");
-            SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source=db1.sqlite;Version=3;");
+            SQLiteConnection.CreateFile("test.sqlite");
+            SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source=test.sqlite;Version=3;");
             m_dbConnection.Open();
 
             SQLiteCommand cmd;
