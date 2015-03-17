@@ -104,11 +104,21 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = Tables.CreateFixesTable;
                 ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Fixes', 'position', 4326, 'POINT',2);";
+                ExecuteQuery(con, q);
                 q = Tables.CreateRunwaysTable;
+                ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Runways', 'position_le', 4326, 'POINT',2);";
+                ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Runways', 'position_he', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
                 q = Tables.CreateRegionsTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateNavaidsTable;
+                ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Navaids', 'position', 4326, 'POINT',2);";
+                ExecuteQuery(con, q);
+                q = "SELECT AddGeometryColumn('tbl_Navaids', 'position_dme', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
                 q = Tables.CreateFrequenciesTable;
                 ExecuteQuery(con, q);
@@ -213,6 +223,18 @@ namespace ConsoleReadXplaneData
                 q = Tables.CreateNavAidsMapLocationIdIndex;
                 ExecuteQuery(con, q);
                 q = Tables.CreateFrequenciesAirportIdentIndex;
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Airports', 'position')";
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Runways', 'position_he')";
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Runways', 'position_le')";
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Fixes', 'position')";
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position')";
+                ExecuteQuery(con, q);
+                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position_dme')";
                 ExecuteQuery(con, q);
             }
             catch (Exception ee)
@@ -319,7 +341,7 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void AddgeomPoint(String tablename, String databaseName)
+        public static void AddgeomPoint(String tablename, String databaseName, String column)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -327,20 +349,20 @@ namespace ConsoleReadXplaneData
 
             // UPDATE tbl_Airports SET position = GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326);
             // SELECT CreateSpatialIndex('tbl_Airports', 'position')
-            log.Info("Updating position column for: {0}", tablename);
+            log.Info("Updating {0} column for: {1}", column, tablename);
             try
             {
                 con = GetSpatialConnection(databaseName);
-                String q = "UPDATE " + tablename + " SET position = GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326)";
-                log.Debug("position SQL {0}", q);
+                String q = "UPDATE " + tablename + " SET " + column + "= GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326)";
+                log.Debug("{0} SQL {1}", column, q);
                 SQLiteCommand cmd = new SQLiteCommand(q, con);
 
                 cmd.ExecuteNonQuery();
-                log.Info("position for: {0} is updated!!", tablename);
+                log.Info("{0} for: {1} is updated!!", column, tablename);
             }
             catch (Exception ee)
             {
-                log.Error("Error updating position for {0} Error: {1}", tablename, ee.Message);
+                log.Error("Error updating {0} for {1} Error: {2}", column, tablename, ee.Message);
             }
             finally
             {
@@ -404,12 +426,6 @@ namespace ConsoleReadXplaneData
                 
                 float count = table.Rows.Count;
                 float pos = 0;
-
-                //if (tableName == "tbl_Airports")
-                //{
-                //    DataColumn c = new DataColumn("position");
-                //    table.Columns.Add(c);
-                //}
 
                 foreach (DataRow R in table.Rows)
                 {

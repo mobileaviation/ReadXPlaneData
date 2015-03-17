@@ -30,9 +30,9 @@ C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadX
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.pdb
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.xml
-C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csprojResolveAssemblyReference.cache
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.Tables.resources
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.urls.resources
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.GenerateResource.Cache
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.exe
 C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.pdb
+C:\Users\rob.verhoef\Documents\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\earth_fix.dat

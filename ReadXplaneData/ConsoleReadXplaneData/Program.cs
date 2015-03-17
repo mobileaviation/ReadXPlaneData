@@ -29,13 +29,13 @@ namespace ConsoleReadXplaneData
                 importTypes = new List<ImportTypes>() 
                 {
                     ImportTypes.airports
-                    //,ImportTypes.continents 
-                    //,ImportTypes.countries
-                    //,ImportTypes.fixes
-                    //,ImportTypes.frequencies
-                    //,ImportTypes.navaids
-                    //,ImportTypes.regions
-                    //,ImportTypes.runways
+                    ,ImportTypes.continents 
+                    ,ImportTypes.countries
+                    ,ImportTypes.fixes
+                    ,ImportTypes.frequencies
+                    ,ImportTypes.navaids
+                    ,ImportTypes.regions
+                    ,ImportTypes.runways
                     //ImportTypes.test
                 };
 
@@ -66,6 +66,7 @@ namespace ConsoleReadXplaneData
 
                     mapLocationList.Add("tbl_Fixes");
                     Database.InsertFixTableIntoDatabase(fixTable, databaseFilename);
+                    Database.AddgeomPoint("tbl_Fixes", databaseFilename, "position");
                     log.Info("xplane-fix inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -125,7 +126,7 @@ namespace ConsoleReadXplaneData
 
                     //mapLocationList.Add("tbl_Airports");
                     Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Airports", databaseFilename);
+                    Database.AddgeomPoint("tbl_Airports", databaseFilename, "position");
                     log.Info("airports inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -145,6 +146,8 @@ namespace ConsoleReadXplaneData
 
                     mapLocationList.Add("tbl_Navaids");
                     Database.InsertTableIntoDatabase(navaidsTable, "tbl_Navaids", databaseFilename, mapLocationList);
+                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "position");
+                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "position_dme");
                     log.Info("Navaids inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -162,6 +165,8 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert Runways in database...");
 
                     Database.InsertTableIntoDatabase(runwaysTable, "tbl_Runways", databaseFilename, mapLocationList);
+                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "position_le");
+                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "position_he");
                     log.Info("Runways inserted in database!");
                     log.Info("*********************************************");
                 }
