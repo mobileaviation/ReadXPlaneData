@@ -16,9 +16,10 @@ namespace SQLiteTestApp
             SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source=test.sqlite;Version=3;");
             m_dbConnection.Open();
 
-            SQLiteCommand cmd = new SQLiteCommand(m_dbConnection);
-            cmd.CommandText = "create table highscores (name varchar(20), score int)";
-            cmd.ExecuteNonQuery();
+            SQLiteCommand cmd;
+            //cmd = new SQLiteCommand(m_dbConnection);
+            //cmd.CommandText = "create table highscores (name varchar(20), score int)";
+            //cmd.ExecuteNonQuery();
 
             cmd = new SQLiteCommand(m_dbConnection);
             cmd.CommandText = "SELECT load_extension('libspatialite-2.dll')";
