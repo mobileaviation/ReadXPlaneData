@@ -108,9 +108,9 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = Tables.CreateRunwaysTable;
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Runways', 'position_le', 4326, 'POINT',2);";
+                q = "SELECT AddGeometryColumn('tbl_Runways', 'le_position', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Runways', 'position_he', 4326, 'POINT',2);";
+                q = "SELECT AddGeometryColumn('tbl_Runways', 'he_position', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
                 q = Tables.CreateRegionsTable;
                 ExecuteQuery(con, q);
@@ -118,7 +118,7 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = "SELECT AddGeometryColumn('tbl_Navaids', 'position', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Navaids', 'position_dme', 4326, 'POINT',2);";
+                q = "SELECT AddGeometryColumn('tbl_Navaids', 'dme_position', 4326, 'POINT',2);";
                 ExecuteQuery(con, q);
                 q = Tables.CreateFrequenciesTable;
                 ExecuteQuery(con, q);
@@ -226,15 +226,15 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = "SELECT CreateSpatialIndex('tbl_Airports', 'position')";
                 ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Runways', 'position_he')";
+                q = "SELECT CreateSpatialIndex('tbl_Runways', 'he_position')";
                 ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Runways', 'position_le')";
+                q = "SELECT CreateSpatialIndex('tbl_Runways', 'le_position')";
                 ExecuteQuery(con, q);
                 q = "SELECT CreateSpatialIndex('tbl_Fixes', 'position')";
                 ExecuteQuery(con, q);
                 q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position')";
                 ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position_dme')";
+                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'dme_position')";
                 ExecuteQuery(con, q);
             }
             catch (Exception ee)
@@ -341,11 +341,14 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void AddgeomPoint(String tablename, String databaseName, String column)
+        public static void AddgeomPoint(String tablename, String databaseName, String prefix)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
             log.Info("Start creating database tables");
+            String column = prefix + "position";
+            String lon = prefix + "longitude_deg";
+            String lat = prefix + "latitude_deg";
 
             // UPDATE tbl_Airports SET position = GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326);
             // SELECT CreateSpatialIndex('tbl_Airports', 'position')
@@ -353,7 +356,7 @@ namespace ConsoleReadXplaneData
             try
             {
                 con = GetSpatialConnection(databaseName);
-                String q = "UPDATE " + tablename + " SET " + column + "= GeomFromText('POINT(' || longitude_deg || ' ' || latitude_deg || ')', 4326)";
+                String q = "UPDATE " + tablename + " SET " + column + "= GeomFromText('POINT(' || "+lon+" || ' ' || "+lat+" || ')', 4326)";
                 log.Debug("{0} SQL {1}", column, q);
                 SQLiteCommand cmd = new SQLiteCommand(q, con);
 

@@ -66,7 +66,7 @@ namespace ConsoleReadXplaneData
 
                     mapLocationList.Add("tbl_Fixes");
                     Database.InsertFixTableIntoDatabase(fixTable, databaseFilename);
-                    Database.AddgeomPoint("tbl_Fixes", databaseFilename, "position");
+                    Database.AddgeomPoint("tbl_Fixes", databaseFilename, "");
                     log.Info("xplane-fix inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -126,7 +126,7 @@ namespace ConsoleReadXplaneData
 
                     //mapLocationList.Add("tbl_Airports");
                     Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Airports", databaseFilename, "position");
+                    Database.AddgeomPoint("tbl_Airports", databaseFilename, "");
                     log.Info("airports inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -146,8 +146,8 @@ namespace ConsoleReadXplaneData
 
                     mapLocationList.Add("tbl_Navaids");
                     Database.InsertTableIntoDatabase(navaidsTable, "tbl_Navaids", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "position");
-                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "position_dme");
+                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "");
+                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "dme_");
                     log.Info("Navaids inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -165,8 +165,8 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert Runways in database...");
 
                     Database.InsertTableIntoDatabase(runwaysTable, "tbl_Runways", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "position_le");
-                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "position_he");
+                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "le_");
+                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "he_");
                     log.Info("Runways inserted in database!");
                     log.Info("*********************************************");
                 }
