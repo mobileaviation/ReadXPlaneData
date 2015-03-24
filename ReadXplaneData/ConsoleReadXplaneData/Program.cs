@@ -10,10 +10,11 @@ namespace ConsoleReadXplaneData
 {
     class Program
     {
-        static string databaseFilename = "airnav.db";
+        static string databaseFilename = "airnav_v12.db";
         static string filesPath = @"data\";
         static List<string> mapLocationList;
         static Logger log;
+        static Boolean spatialEnabled = false;
 
         static List<ImportTypes> importTypes;
 
@@ -40,7 +41,7 @@ namespace ConsoleReadXplaneData
                 };
 
                 Database.CreateDatabase(databaseFilename);
-                Database.CreateTables(databaseFilename);
+                Database.CreateTables(databaseFilename, spatialEnabled);
 
                 mapLocationList = new List<string>();
 
@@ -65,8 +66,8 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert xplane-fix in database...");
 
                     mapLocationList.Add("tbl_Fixes");
-                    Database.InsertFixTableIntoDatabase(fixTable, databaseFilename);
-                    Database.AddgeomPoint("tbl_Fixes", databaseFilename, "");
+                    Database.InsertFixTableIntoDatabase(fixTable, databaseFilename, spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Fixes", databaseFilename, "", spatialEnabled);
                     log.Info("xplane-fix inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -90,7 +91,7 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert regions in database...");
 
                     mapLocationList.Add("tbl_Region");
-                    Database.InsertTableIntoDatabase(regionsTable, "tbl_Region", databaseFilename, mapLocationList);
+                    Database.InsertTableIntoDatabase(regionsTable, "tbl_Region", databaseFilename, mapLocationList, spatialEnabled);
                     log.Info("Regions inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -107,7 +108,7 @@ namespace ConsoleReadXplaneData
 
                     log.Info("Insert countries in database...");
 
-                    Database.InsertTableIntoDatabase(countriesTable, "tbl_Country", databaseFilename, mapLocationList);
+                    Database.InsertTableIntoDatabase(countriesTable, "tbl_Country", databaseFilename, mapLocationList, spatialEnabled);
                     log.Info("Countries inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -125,8 +126,8 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert airports in database...");
 
                     //mapLocationList.Add("tbl_Airports");
-                    Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Airports", databaseFilename, "");
+                    Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList, spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Airports", databaseFilename, "", spatialEnabled);
                     log.Info("airports inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -145,9 +146,9 @@ namespace ConsoleReadXplaneData
                     log.Info("Insert Navaids in database...");
 
                     mapLocationList.Add("tbl_Navaids");
-                    Database.InsertTableIntoDatabase(navaidsTable, "tbl_Navaids", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "");
-                    Database.AddgeomPoint("tbl_Navaids", databaseFilename, "dme_");
+                    Database.InsertTableIntoDatabase(navaidsTable, "tbl_Navaids", databaseFilename, mapLocationList, spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Navaids", databaseFilename, "", spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Navaids", databaseFilename, "dme_", spatialEnabled);
                     log.Info("Navaids inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -164,9 +165,9 @@ namespace ConsoleReadXplaneData
 
                     log.Info("Insert Runways in database...");
 
-                    Database.InsertTableIntoDatabase(runwaysTable, "tbl_Runways", databaseFilename, mapLocationList);
-                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "le_");
-                    Database.AddgeomPoint("tbl_Runways", databaseFilename, "he_");
+                    Database.InsertTableIntoDatabase(runwaysTable, "tbl_Runways", databaseFilename, mapLocationList, spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Runways", databaseFilename, "le_", spatialEnabled);
+                    if (spatialEnabled) Database.AddgeomPoint("tbl_Runways", databaseFilename, "he_", spatialEnabled);
                     log.Info("Runways inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -184,7 +185,7 @@ namespace ConsoleReadXplaneData
 
                     log.Info("Insert Frequencies in database...");
 
-                    Database.InsertTableIntoDatabase(frequenciesTable, "tbl_AirportFrequencies", databaseFilename, mapLocationList);
+                    Database.InsertTableIntoDatabase(frequenciesTable, "tbl_AirportFrequencies", databaseFilename, mapLocationList, spatialEnabled);
                     log.Info("Frequencies inserted in database!");
                     log.Info("*********************************************");
                 }
@@ -192,21 +193,21 @@ namespace ConsoleReadXplaneData
                 if (importTypes.Contains(ImportTypes.test))
                 {
                     log.Info("start test insert");
-                    Database.testInsert("tbl_Airports", databaseFilename);
+                    Database.testInsert("tbl_Airports", databaseFilename, spatialEnabled);
                 }
 
-                Database.CreateTableIndexen(databaseFilename);
+                Database.CreateTableIndexen(databaseFilename, spatialEnabled);
                 log.Info("Tables Indexen created");
 
                 // ************************************************************************************
 
                 log.Info("Insert Andriod in database...");
-                Database.CreateAndriodTable(databaseFilename);
+                Database.CreateAndriodTable(databaseFilename, spatialEnabled);
                 log.Info("Andriod table inserted in database!");
                 log.Info("*********************************************");
 
                 log.Info("Insert tbl_Properties in database...");
-                Database.CreatePropertiesTable(databaseFilename);
+                Database.CreatePropertiesTable(databaseFilename, spatialEnabled);
                 log.Info("tbl_Properties table inserted in database!");
                 log.Info("*********************************************");
 

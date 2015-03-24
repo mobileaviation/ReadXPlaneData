@@ -36,32 +36,35 @@ namespace ConsoleReadXplaneData
             return true;
         }
 
-        private static SQLiteConnection GetSpatialConnection(String database)
+        private static SQLiteConnection GetSpatialConnection(String database, Boolean enabled)
         {
             CreateLogger();
             SQLiteConnection connection;
             connection = new SQLiteConnection("Data Source=" + database + ";Version=3;");
             connection.Open(); // load the extension 
 
-            using (SQLiteCommand command = connection.CreateCommand())
+            if (enabled)
             {
-                //Load the libspatialite library extension - *.dll on windows, *.a on iOS
-                command.CommandText = "SELECT load_extension('libspatialite-2.dll');";
-                command.ExecuteNonQuery(); // Run queries here
-                log.Info("libspatiallite-2.dll loaded!");
+                using (SQLiteCommand command = connection.CreateCommand())
+                {
+                    //Load the libspatialite library extension - *.dll on windows, *.a on iOS
+                    command.CommandText = "SELECT load_extension('libspatialite-2.dll');";
+                    command.ExecuteNonQuery(); // Run queries here
+                    log.Info("libspatiallite-2.dll loaded!");
+                }
             }
             
             return connection;
         }
 
-        private static SQLiteConnection GetConnection(string databaseFilename)
+        private static SQLiteConnection getConnection(string databaseFilename)
         {
             CreateLogger();
             log.Info("Get database connection to: {0}", databaseFilename);
             return new SQLiteConnection("Data Source=" + databaseFilename + ";Version=3;");
         }
 
-        public static void CreateTables(string databaseFilename)
+        public static void CreateTables(string databaseFilename, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -69,10 +72,14 @@ namespace ConsoleReadXplaneData
 
             try
             {
-                con = GetSpatialConnection(databaseFilename);
+                con = GetSpatialConnection(databaseFilename, spatialEnabled);
+                string q;
 
-                string q = "SELECT InitSpatialMetaData();";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT InitSpatialMetaData();";
+                    ExecuteQuery(con, q);
+                }
                 q = "DROP TABLE IF EXISTS tbl_Airports";
                 ExecuteQuery(con, q);
                 q = "DROP TABLE IF EXISTS tbl_Country";
@@ -96,30 +103,42 @@ namespace ConsoleReadXplaneData
 
                 q = Tables.CreateAirportTable;
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Airports', 'position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT AddGeometryColumn('tbl_Airports', 'position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                }
                 q = Tables.CreateContinentTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateCountryTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateFixesTable;
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Fixes', 'position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT AddGeometryColumn('tbl_Fixes', 'position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                }
                 q = Tables.CreateRunwaysTable;
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Runways', 'le_position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Runways', 'he_position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT AddGeometryColumn('tbl_Runways', 'le_position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                    q = "SELECT AddGeometryColumn('tbl_Runways', 'he_position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                }
                 q = Tables.CreateRegionsTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateNavaidsTable;
                 ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Navaids', 'position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
-                q = "SELECT AddGeometryColumn('tbl_Navaids', 'dme_position', 4326, 'POINT',2);";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT AddGeometryColumn('tbl_Navaids', 'position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                    q = "SELECT AddGeometryColumn('tbl_Navaids', 'dme_position', 4326, 'POINT',2);";
+                    ExecuteQuery(con, q);
+                }
                 q = Tables.CreateFrequenciesTable;
                 ExecuteQuery(con, q);
             }
@@ -135,7 +154,7 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void CreateAndriodTable(string databaseFilename)
+        public static void CreateAndriodTable(string databaseFilename, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -143,7 +162,7 @@ namespace ConsoleReadXplaneData
 
             try
             {
-                con = con = GetSpatialConnection(databaseFilename);
+                con = con = GetSpatialConnection(databaseFilename, spatialEnabled);
                 string q = Tables.CreateAndroidMetadata;
                 ExecuteQuery(con, q);
                 q = Tables.InsertAndroidMetadata;
@@ -162,7 +181,7 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void CreatePropertiesTable(string databaseFilename)
+        public static void CreatePropertiesTable(string databaseFilename, Boolean spatialEnabled )
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -170,7 +189,7 @@ namespace ConsoleReadXplaneData
 
             try
             {
-                con = GetSpatialConnection(databaseFilename);
+                con = GetSpatialConnection(databaseFilename, spatialEnabled);
                 string q = Tables.CreateTableProperties;
                 ExecuteQuery(con, q);
                 q = Tables.InsertProperties;
@@ -189,7 +208,7 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void CreateTableIndexen(string databaseFilename)
+        public static void CreateTableIndexen(string databaseFilename, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -197,7 +216,7 @@ namespace ConsoleReadXplaneData
 
             try
             {
-                con = GetSpatialConnection(databaseFilename);
+                con = GetSpatialConnection(databaseFilename, spatialEnabled);
                 string q = Tables.CreateLocationAirportTableIndex;
                 ExecuteQuery(con, q);
                 q = Tables.CreateNameIdentAirportTableIndex;
@@ -224,18 +243,21 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = Tables.CreateFrequenciesAirportIdentIndex;
                 ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Airports', 'position')";
-                ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Runways', 'he_position')";
-                ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Runways', 'le_position')";
-                ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Fixes', 'position')";
-                ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position')";
-                ExecuteQuery(con, q);
-                q = "SELECT CreateSpatialIndex('tbl_Navaids', 'dme_position')";
-                ExecuteQuery(con, q);
+                if (spatialEnabled)
+                {
+                    q = "SELECT CreateSpatialIndex('tbl_Airports', 'position')";
+                    ExecuteQuery(con, q);
+                    q = "SELECT CreateSpatialIndex('tbl_Runways', 'he_position')";
+                    ExecuteQuery(con, q);
+                    q = "SELECT CreateSpatialIndex('tbl_Runways', 'le_position')";
+                    ExecuteQuery(con, q);
+                    q = "SELECT CreateSpatialIndex('tbl_Fixes', 'position')";
+                    ExecuteQuery(con, q);
+                    q = "SELECT CreateSpatialIndex('tbl_Navaids', 'position')";
+                    ExecuteQuery(con, q);
+                    q = "SELECT CreateSpatialIndex('tbl_Navaids', 'dme_position')";
+                    ExecuteQuery(con, q);
+                }
             }
             catch (Exception ee)
             {
@@ -318,14 +340,14 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void testInsert(String tablename, String databaseName)
+        public static void testInsert(String tablename, String databaseName, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
 
             try
             {
-                con = GetSpatialConnection(databaseName);
+                con = GetSpatialConnection(databaseName, spatialEnabled);
                 String q = "INSERT INTO tbl_Airports (id, ident, position) VALUES (NULL, 'EHLE', GeomFromText('POINT(1.01 2.02)', 4326));";
                 SQLiteCommand cmd = new SQLiteCommand(q, con);
 
@@ -341,7 +363,7 @@ namespace ConsoleReadXplaneData
             }
         }
 
-        public static void AddgeomPoint(String tablename, String databaseName, String prefix)
+        public static void AddgeomPoint(String tablename, String databaseName, String prefix, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
             CreateLogger();
@@ -355,7 +377,7 @@ namespace ConsoleReadXplaneData
             log.Info("Updating {0} column for: {1}", column, tablename);
             try
             {
-                con = GetSpatialConnection(databaseName);
+                con = GetSpatialConnection(databaseName, spatialEnabled);
                 String q = "UPDATE " + tablename + " SET " + column + "= GeomFromText('POINT(' || "+lon+" || ' ' || "+lat+" || ')', 4326)";
                 log.Debug("{0} SQL {1}", column, q);
                 SQLiteCommand cmd = new SQLiteCommand(q, con);
@@ -374,14 +396,14 @@ namespace ConsoleReadXplaneData
 
         }
 
-        public static void InsertFixTableIntoDatabase(DataTable table, String databaseFilename)
+        public static void InsertFixTableIntoDatabase(DataTable table, String databaseFilename, Boolean spatialEnabled)
         {
             String tableName = "tbl_Fixes";
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
 
             try
             {
-                con = GetSpatialConnection(databaseFilename);
+                con = GetSpatialConnection(databaseFilename, spatialEnabled);
                 CreateLogger();
                 float count = table.Rows.Count;
                 float pos = 0;
@@ -416,16 +438,16 @@ namespace ConsoleReadXplaneData
             {
                 if (con != null) con.Close();
             }
-        }   
+        }
 
-        public static void InsertTableIntoDatabase(DataTable table, String tableName, String databaseFilename, List<string> mapLocations)
+        public static void InsertTableIntoDatabase(DataTable table, String tableName, String databaseFilename, List<string> mapLocations, Boolean spatialEnabled)
         {
             SQLiteConnection con = null;// = GetConnection(databaseFilename);
 
             try
             {
                 CreateLogger();
-                con = GetSpatialConnection(databaseFilename);
+                con = GetSpatialConnection(databaseFilename, spatialEnabled);
                 
                 float count = table.Rows.Count;
                 float pos = 0;
