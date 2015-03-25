@@ -30,7 +30,7 @@ namespace ConsoleReadXplaneData
                 importTypes = new List<ImportTypes>() 
                 {
                     ImportTypes.airports
-                    ,ImportTypes.continents 
+                    //,ImportTypes.continents 
                     ,ImportTypes.countries
                     ,ImportTypes.fixes
                     ,ImportTypes.frequencies
