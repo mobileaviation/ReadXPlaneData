@@ -332,4 +332,12 @@ value2 text);</value>
     <value>insert into tbl_Properties(name, value1, value2) values("DB_VERSION", "7", "2014-09-20");
 </value>
   </data>
+  <data name="CreateFirsTable" xml:space="preserve">
+    <value>create table tbl_Firs (_id integer primary key autoincrement,
+            id integer,
+            ident text,
+            name text,
+            position text,
+            polygon text);</value>
+  </data>
 </root>

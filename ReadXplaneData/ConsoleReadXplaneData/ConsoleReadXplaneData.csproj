@@ -85,6 +85,9 @@
     <None Include="data\earth_fix.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="data\fir.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="data\navaids.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

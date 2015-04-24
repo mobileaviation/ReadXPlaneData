@@ -132,6 +132,20 @@ namespace ConsoleReadXplaneData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to create table tbl_Firs (_id integer primary key autoincrement,
+        ///            id integer,
+        ///            ident text,
+        ///            name text,
+        ///            position text,
+        ///            polygon text);.
+        /// </summary>
+        internal static string CreateFirsTable {
+            get {
+                return ResourceManager.GetString("CreateFirsTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to create index fixes_location_index
         ///            on tbl_Fixes(
         ///            latitude_deg,

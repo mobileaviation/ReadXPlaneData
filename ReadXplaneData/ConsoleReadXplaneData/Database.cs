@@ -100,6 +100,8 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = "DROP TABLE IF EXISTS android_metadata";
                 ExecuteQuery(con, q);
+                q = "DROP TABLE IF EXISTS tbl_Firs";
+                ExecuteQuery(con, q);
 
                 q = Tables.CreateAirportTable;
                 ExecuteQuery(con, q);
@@ -140,6 +142,8 @@ namespace ConsoleReadXplaneData
                     ExecuteQuery(con, q);
                 }
                 q = Tables.CreateFrequenciesTable;
+                ExecuteQuery(con, q);
+                q = Tables.CreateFirsTable;
                 ExecuteQuery(con, q);
             }
             catch (Exception ee)
@@ -314,7 +318,7 @@ namespace ConsoleReadXplaneData
                 }
             }
 
-            //log.Debug(cmd);
+            //log.Info(q);
 
             return cmd;
         }

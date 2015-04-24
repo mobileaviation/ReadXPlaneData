@@ -37,6 +37,7 @@ namespace ConsoleReadXplaneData
                     ,ImportTypes.navaids
                     ,ImportTypes.regions
                     ,ImportTypes.runways
+                    ,ImportTypes.firs
                     //ImportTypes.test
                 };
 
@@ -95,6 +96,24 @@ namespace ConsoleReadXplaneData
                     log.Info("Regions inserted in database!");
                     log.Info("*********************************************");
                 }
+
+                // *************************************************************************************
+                if (importTypes.Contains(ImportTypes.firs))
+                {
+                    csvReader = new CsvReader();
+                    log.Info("start reading firs");
+                    DataTable regionsTable = csvReader.ReadFile(filesPath + "fir.csv");
+
+                    log.Info("Regions file read!");
+                    log.Info("*********************************************");
+
+                    log.Info("Insert Firs in database...");
+
+                    Database.InsertTableIntoDatabase(regionsTable, "tbl_Firs", databaseFilename, mapLocationList, spatialEnabled);
+                    log.Info("Firs inserted in database!");
+                    log.Info("*********************************************");
+                }
+
 
                 // *************************************************************************************
                 if (importTypes.Contains(ImportTypes.countries))
