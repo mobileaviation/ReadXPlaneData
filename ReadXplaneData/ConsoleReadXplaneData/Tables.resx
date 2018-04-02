@@ -340,4 +340,14 @@ value2 text);</value>
             position text,
             polygon text);</value>
   </data>
+  <data name="CreateOfmMbTilesTable" xml:space="preserve">
+    <value>create table tbl_OfmMbTiles(_id integer primary key autoincrement,
+      name text,
+      region text,
+      mbtileslink text,
+      xmllink text,
+      version text,
+      startValidity integer,
+      endValidity integer);</value>
+  </data>
 </root>

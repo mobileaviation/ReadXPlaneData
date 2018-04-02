@@ -102,6 +102,8 @@ namespace ConsoleReadXplaneData
                 ExecuteQuery(con, q);
                 q = "DROP TABLE IF EXISTS tbl_Firs";
                 ExecuteQuery(con, q);
+                q = "DROP TABLE IF EXISTS tbl_OfmMbTiles";
+                ExecuteQuery(con, q);
 
                 q = Tables.CreateAirportTable;
                 ExecuteQuery(con, q);
@@ -144,6 +146,8 @@ namespace ConsoleReadXplaneData
                 q = Tables.CreateFrequenciesTable;
                 ExecuteQuery(con, q);
                 q = Tables.CreateFirsTable;
+                ExecuteQuery(con, q);
+                q = Tables.CreateOfmMbTilesTable;
                 ExecuteQuery(con, q);
             }
             catch (Exception ee)

@@ -16,6 +16,7 @@ namespace ConsoleReadXplaneData
         regions,
         runways,
         firs,
+        ofm_mbtiles,
         test
     }
 }
