@@ -10,8 +10,8 @@ namespace ConsoleReadXplaneData
 {
     class Program
     {
-        static string databaseFilename = "airnav_v12.db";
-        static string filesPath = @"data\";
+        static string databaseFilename;
+        static string filesPath;
         static List<string> mapLocationList;
         static Logger log;
         static Boolean spatialEnabled = false;
@@ -20,10 +20,17 @@ namespace ConsoleReadXplaneData
 
         static void Main(string[] args)
         {
+            databaseFilename = String.Format(Properties.Settings.Default.Database + "_V{0:0000}{1:00}{2:00}.db",
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
             log = LogManager.GetCurrentClassLogger();
             log.Info("Start Airnav Database create program");
+            filesPath = Properties.Settings.Default.InputDataDir;
 
             Boolean test = false;
+
+            DataDownloader downloader = new DataDownloader(filesPath);
+            downloader.DownloadFiles();
 
             if (!test)
             {

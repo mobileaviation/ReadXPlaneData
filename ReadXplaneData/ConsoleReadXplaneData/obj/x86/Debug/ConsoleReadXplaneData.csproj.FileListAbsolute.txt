@@ -43,3 +43,34 @@ C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXp
 C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\regions.csv
 C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\runways.csv
 C:\Users\Rob Verhoef\Documents\Visual Studio 2010\Projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\fir.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csprojResolveAssemblyReference.cache
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.Tables.resources
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.urls.resources
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.GenerateResource.Cache
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.CoreCompileInputs.cache
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\airport-frequencies.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\airports.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\countries.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\earth_fix.dat
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\fir.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\navaids.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\regions.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\runways.csv
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.config
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe.config
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.pdb
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.SqlServer.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.EF6.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.Linq.dll
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.xml
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.SqlServer.xml
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.pdb
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.xml
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.xml
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.dll.config
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.exe
+C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.pdb
