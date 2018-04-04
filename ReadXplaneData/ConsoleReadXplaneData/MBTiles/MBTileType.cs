@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ConsoleReadXplaneData.MBTiles
+namespace FSPAirnavDatabaseExporter.MBTiles
 {
     public enum MBTileType
     {

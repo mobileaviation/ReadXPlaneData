@@ -7,7 +7,7 @@ using NLog;
 using System.Resources;
 using System.Data;
 
-namespace ConsoleReadXplaneData
+namespace FSPAirnavDatabaseExporter
 {
     public class Database
     {

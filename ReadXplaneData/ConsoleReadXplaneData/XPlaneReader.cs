@@ -6,7 +6,7 @@ using System.IO;
 using System.Data;
 using NLog;
 
-namespace ConsoleReadXplaneData
+namespace FSPAirnavDatabaseExporter
 {
     public class XPlaneReader
     {

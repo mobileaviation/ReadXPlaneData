@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using NLog;
 using System.Data;
 
-namespace ConsoleReadXplaneData
+namespace FSPAirnavDatabaseExporter
 {
     class Program
     {

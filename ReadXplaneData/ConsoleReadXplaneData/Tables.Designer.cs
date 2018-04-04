@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleReadXplaneData {
+namespace FSPAirnavDatabaseExporter
+{
     using System;
     
     

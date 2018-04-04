@@ -1,10 +1,10 @@
-﻿using ConsoleReadXplaneData.MBTiles;
+﻿using FSPAirnavDatabaseExporter.MBTiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ConsoleReadXplaneData
+namespace FSPAirnavDatabaseExporter
 {
     public class MbTile
     {
