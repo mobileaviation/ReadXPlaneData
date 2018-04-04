@@ -229,6 +229,23 @@ namespace ConsoleReadXplaneData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to create table tbl_MbTiles(_id integer primary key autoincrement,
+        ///      name text,
+        ///      region text,
+        ///      type text,
+        ///      mbtileslink text,
+        ///      xmllink text,
+        ///      version integer,
+        ///      startValidity integer,
+        ///      endValidity integer);.
+        /// </summary>
+        internal static string CreateMbTilesTable {
+            get {
+                return ResourceManager.GetString("CreateMbTilesTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to create index name_ident_index 
         ///            on tbl_Airports (
         ///            id, 
@@ -297,22 +314,6 @@ namespace ConsoleReadXplaneData {
         internal static string CreateNavaidsTable {
             get {
                 return ResourceManager.GetString("CreateNavaidsTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to create table tbl_OfmMbTiles(_id integer primary key autoincrement,
-        ///      name text,
-        ///      region text,
-        ///      mbtileslink text,
-        ///      xmllink text,
-        ///      version text,
-        ///      startValidity integer,
-        ///      endValidity integer);.
-        /// </summary>
-        internal static string CreateOfmMbTilesTable {
-            get {
-                return ResourceManager.GetString("CreateOfmMbTilesTable", resourceCulture);
             }
         }
         

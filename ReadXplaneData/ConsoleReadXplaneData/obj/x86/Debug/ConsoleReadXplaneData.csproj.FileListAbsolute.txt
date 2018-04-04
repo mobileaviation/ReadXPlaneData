@@ -74,3 +74,33 @@ C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.D
 C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.dll.config
 C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.exe
 C:\GitHub\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.pdb
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.Tables.resources
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.urls.resources
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.GenerateResource.cache
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.CoreCompileInputs.cache
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\airport-frequencies.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\airports.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\countries.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\earth_fix.dat
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\fir.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\navaids.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\regions.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\data\runways.csv
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.config
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe.config
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.exe
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\ConsoleReadXplaneData.pdb
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.SqlServer.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.xml
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\EntityFramework.SqlServer.xml
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\NLog.xml
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.xml
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\bin\Debug\System.Data.SQLite.dll.config
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.csproj.CopyComplete
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.exe
+C:\Development projects\ReadXPlaneData\ReadXplaneData\ConsoleReadXplaneData\obj\x86\Debug\ConsoleReadXplaneData.pdb

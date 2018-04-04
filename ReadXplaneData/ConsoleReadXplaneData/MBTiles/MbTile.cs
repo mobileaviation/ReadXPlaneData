@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ConsoleReadXplaneData
 {
-    public class OfmMbTile
+    public class MbTile
     {
         public String Region { get; set; }
         public String MbTilesLink { get; set; }
