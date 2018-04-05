@@ -57,7 +57,7 @@ namespace FSPAirnavDatabaseExporter
             return connection;
         }
 
-        private static SQLiteConnection getConnection(string databaseFilename)
+        public static SQLiteConnection getConnection(string databaseFilename)
         {
             CreateLogger();
             log.Info("Get database connection to: {0}", databaseFilename);

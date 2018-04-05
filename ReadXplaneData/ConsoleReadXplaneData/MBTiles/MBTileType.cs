@@ -7,6 +7,16 @@ namespace FSPAirnavDatabaseExporter.MBTiles
 {
     public enum MBTileType
     {
-        ofm
+        ofm,
+        unknown
+    }
+
+    public static class MBTileTypeHelper
+    {
+        public static MBTileType Parse(String type)
+        {
+            if (type == "ofm") return MBTileType.ofm;
+            return MBTileType.unknown;
+        }
     }
 }

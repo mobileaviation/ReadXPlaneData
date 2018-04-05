@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.SQLite;
 using NLog;
 using System.Data;
+using FSPAirnavDatabaseExporter.MBTiles;
 
 namespace FSPAirnavDatabaseExporter
 {
@@ -29,23 +30,24 @@ namespace FSPAirnavDatabaseExporter
 
             Boolean test = false;
 
-            DataDownloader downloader = new DataDownloader(filesPath);
-            downloader.DownloadFiles();
+            //DataDownloader downloader = new DataDownloader(filesPath);
+            //downloader.DownloadFiles();
 
             if (!test)
             {
                 importTypes = new List<ImportTypes>() 
                 {
-                    ImportTypes.airports
-                    //,ImportTypes.continents 
-                    ,ImportTypes.countries
-                    ,ImportTypes.fixes
-                    ,ImportTypes.frequencies
-                    ,ImportTypes.navaids
-                    ,ImportTypes.regions
-                    ,ImportTypes.runways
-                    ,ImportTypes.firs
-                    //ImportTypes.test
+                    ImportTypes.mbtiles
+                    //,ImportTypes.airports
+                    ////,ImportTypes.continents 
+                    //,ImportTypes.countries
+                    //,ImportTypes.fixes
+                    //,ImportTypes.frequencies
+                    //,ImportTypes.navaids
+                    //,ImportTypes.regions
+                    //,ImportTypes.runways
+                    //,ImportTypes.firs
+                    ////ImportTypes.test
                 };
 
                 Database.CreateDatabase(databaseFilename);
@@ -60,6 +62,12 @@ namespace FSPAirnavDatabaseExporter
                 XPlaneReader xplaneReader;
 
                 xplaneReader = new XPlaneReader();
+
+                if (importTypes.Contains(ImportTypes.mbtiles))
+                {
+                    ReadMBTiles reader = new ReadMBTiles();
+                    reader.Process();
+                }
 
                 if (importTypes.Contains(ImportTypes.fixes))
                 {
