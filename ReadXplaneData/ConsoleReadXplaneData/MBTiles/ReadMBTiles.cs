@@ -111,7 +111,7 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                 tile.XmlLink = link;
 
                 // Store tile in airnav DB
-                tiles.Add(tile);
+                if (tile.MbTilesLink!=null) tiles.Add(tile);
             }
             return tiles;
         }
@@ -134,8 +134,16 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                              startValidity = Convert.ToDateTime(v.Attribute("startValidity").Value),
                              endValidity = Convert.ToDateTime(v.Attribute("endValidity").Value)
                          };
-
-            var cycleMax = cycles.First(x => x.Version == cycles.Max(xx => xx.Version));
+            MbTile cycleMax = null;
+            if (cycles.Count()>0)
+                cycleMax = cycles.First(x => x.Version == cycles.Max(xx => xx.Version));
+            else
+            {
+                cycleMax = new MbTile();
+                cycleMax.Version = curVersion;
+                cycleMax.startValidity = DateTime.Now;
+                cycleMax.startValidity = DateTime.Now.AddDays(20);
+            }
 
             if (cycleMax.Version>curVersion)
             {
@@ -146,17 +154,18 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                                 where d.Attribute("type").Value == "downloads"
                                 select d;
             var section = from m in download_item.Elements("section")
-                          where m.Attribute("header_english").Value == "Application Formats"
+                          where m.Attribute("header_english").Value.ToLower() == "application formats"
                           select m;
             var product = from p in section.Elements("product")
-                          where p.Attribute("title_english").Value == "Mapbox Tiles"
+                          where p.Attribute("title_english").Value.ToLower() == "mapbox tiles"
                           select p;
             var mbdownload = from d in product.Elements("download").Elements("variant")
                              select d;
 
-            cycleMax.MbTilesLink = (mbdownload.Count() > 1) ?
-                (from m in mbdownload where m.Attribute("filter1_english").Value == "double resolution (@2x)" select m).First().Attribute("URL").Value :
-                mbdownload.First().Attribute("URL").Value;
+            if (mbdownload.Count() > 0) 
+                cycleMax.MbTilesLink = (mbdownload.Count() > 1) ?
+                    (from m in mbdownload where m.Attribute("filter1_english").Value.ToLower().Contains("double") select m).First().Attribute("URL").Value :
+                    mbdownload.First().Attribute("URL").Value;
 
             return cycleMax;
         }
