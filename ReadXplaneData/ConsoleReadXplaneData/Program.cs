@@ -73,7 +73,7 @@ namespace FSPAirnavDatabaseExporter
                 if (importTypes.Contains(ImportTypes.fixes))
                 {
                     log.Info("start reading xplane-fix");
-                    DataTable fixTable = xplaneReader.ReadFixFile(filesPath + "earth_fix.dat");
+                    DataTable fixTable = xplaneReader.ReadFixFile(@"data\" + "earth_fix.dat");
 
                     log.Info("xplane-fix file read");
                     xplaneReader = new XPlaneReader();
@@ -118,7 +118,7 @@ namespace FSPAirnavDatabaseExporter
                 {
                     csvReader = new CsvReader();
                     log.Info("start reading firs");
-                    DataTable regionsTable = csvReader.ReadFile(filesPath + "fir.csv");
+                    DataTable regionsTable = csvReader.ReadFile(@"data\" + "fir.csv");
 
                     log.Info("Regions file read!");
                     log.Info("*********************************************");
