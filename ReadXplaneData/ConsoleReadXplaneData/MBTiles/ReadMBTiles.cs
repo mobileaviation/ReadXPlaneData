@@ -36,7 +36,7 @@ namespace FSPAirnavDatabaseExporter.MBTiles
             String database = @"data\mbtiles.db";
             connection = Database.getConnection(database);
             connection.Open();
-            DataTable dataTiles = new DataTable();
+            DataTable dataTiles = getMbTilesTable();
 
             SQLiteDataReader typeReader = getTypes();
             while(typeReader.Read())
@@ -58,18 +58,33 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                             DataRow tilerow = dataTiles.NewRow();
                             tilerow["name"] = tile.Name;
                             tilerow["region"] = tile.Region;
-                            tilerow["type "] = tile.Type.ToString();
-                            tilerow["mbtileslink "] = tile.MbTilesLink;
-                            tilerow["xmllink "] = tile.XmlLink;
-                            tilerow["version "] = tile.Version;
-                            tilerow["startValidity  "] = tile.startValidity.Millisecond;
-                            tilerow["endValidity  "] = tile.endValidity.Millisecond;
+                            tilerow["type"] = tile.Type.ToString();
+                            tilerow["mbtileslink"] = tile.MbTilesLink;
+                            tilerow["xmllink"] = tile.XmlLink;
+                            tilerow["version"] = tile.Version;
+                            tilerow["startValidity"] = getUnixTimeStamp(tile.startValidity);
+                            tilerow["endValidity"] = getUnixTimeStamp(tile.endValidity);
+                            dataTiles.Rows.Add(tilerow);
                         }
                     }
                 }
             }
 
             connection.Close();
+            return dataTiles;
+        }
+
+        private DataTable getMbTilesTable()
+        {
+            DataTable dataTiles = new DataTable();
+            dataTiles.Columns.Add("name", typeof(string));
+            dataTiles.Columns.Add("region", typeof(string));
+            dataTiles.Columns.Add("type", typeof(string));
+            dataTiles.Columns.Add("mbtileslink", typeof(string));
+            dataTiles.Columns.Add("xmllink", typeof(string));
+            dataTiles.Columns.Add("version", typeof(int));
+            dataTiles.Columns.Add("startValidity", typeof(long));
+            dataTiles.Columns.Add("endValidity", typeof(long));
             return dataTiles;
         }
 
@@ -83,11 +98,12 @@ namespace FSPAirnavDatabaseExporter.MBTiles
             SQLiteDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                int id = Convert.ToInt32(reader["_id"].ToString());
                 String _region = reader["region"].ToString();
                 int _version = Convert.ToInt32(reader["version"].ToString());
                 String _name = reader["name"].ToString();
-                long _startValidity = Convert.ToInt64(reader["startValidity"].ToString());
-                long _ebdValidity = Convert.ToInt64(reader["endValidity"].ToString());
+                //DateTime _startValidity = Convert.ToDateTime(reader["startValidity"].ToString());
+                //DateTime _endValidity = Convert.ToDateTime(reader["endValidity"].ToString());
 
                 String link = createLink(_region, _version, xmlLink);
 
@@ -103,7 +119,7 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                     log.Info("Reading new: {0} with XML link {1}.", _name, link);
                     xml = downloadXml(link);
                     tile = parseOfmXml(xml, _version);
-                    // Update the source database
+                    updateVersion(id, tile.Version, tile.startValidity, tile.endValidity);
                 }
 
                 tile.Region = _region;
@@ -114,6 +130,17 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                 if (tile.MbTilesLink!=null) tiles.Add(tile);
             }
             return tiles;
+        }
+
+        private void updateVersion(int id, int version, DateTime startValidity, DateTime endValidity)
+        {
+            String query = "UPDATE tbl_regions SET version=@version, startValidity=@startValidity, endValidity=@endValidity WHERE _id=@id;";
+            SQLiteCommand cmd = new SQLiteCommand(query, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@version", version);
+            cmd.Parameters.AddWithValue("@startValidity", getUnixTimeStamp(startValidity));
+            cmd.Parameters.AddWithValue("@endValidity", getUnixTimeStamp(endValidity));
+            cmd.ExecuteNonQuery();
         }
 
         private String createLink(String region, Int32 version, String Inlink)
@@ -199,6 +226,12 @@ namespace FSPAirnavDatabaseExporter.MBTiles
             return reader;
         }
 
+
+        private long getUnixTimeStamp(DateTime date)
+        {
+            long epochTicks = new DateTime(1970, 1, 1).Ticks;
+            return ((date.Ticks - epochTicks) / TimeSpan.TicksPerSecond);
+        }
         
     }
 }

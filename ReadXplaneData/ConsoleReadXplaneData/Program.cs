@@ -38,16 +38,16 @@ namespace FSPAirnavDatabaseExporter
                 importTypes = new List<ImportTypes>() 
                 {
                     ImportTypes.mbtiles
-                    //,ImportTypes.airports
-                    ////,ImportTypes.continents 
-                    //,ImportTypes.countries
-                    //,ImportTypes.fixes
-                    //,ImportTypes.frequencies
-                    //,ImportTypes.navaids
-                    //,ImportTypes.regions
-                    //,ImportTypes.runways
-                    //,ImportTypes.firs
-                    ////ImportTypes.test
+                    ,ImportTypes.airports
+                    //,ImportTypes.continents 
+                    ,ImportTypes.countries
+                    ,ImportTypes.fixes
+                    ,ImportTypes.frequencies
+                    ,ImportTypes.navaids
+                    ,ImportTypes.regions
+                    ,ImportTypes.runways
+                    ,ImportTypes.firs
+                    //ImportTypes.test
                 };
 
                 Database.CreateDatabase(databaseFilename);
@@ -66,7 +66,8 @@ namespace FSPAirnavDatabaseExporter
                 if (importTypes.Contains(ImportTypes.mbtiles))
                 {
                     ReadMBTiles reader = new ReadMBTiles();
-                    reader.Process();
+                    DataTable mbTilesTable = reader.Process();
+                    Database.InsertTableIntoDatabase(mbTilesTable, "tbl_MbTiles", databaseFilename, mapLocationList, false);
                 }
 
                 if (importTypes.Contains(ImportTypes.fixes))
