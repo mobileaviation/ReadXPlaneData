@@ -412,15 +412,18 @@ namespace FSPAirnavDatabaseExporter
             try
             {
                 con = GetSpatialConnection(databaseFilename, spatialEnabled);
+                SQLiteTransaction transaction = con.BeginTransaction();
                 CreateLogger();
                 float count = table.Rows.Count;
                 float pos = 0;
+                String q = "INSERT INTO " + tableName + " (name, ident, latitude_deg, longitude_deg)" +
+                        " VALUES(@name, @ident, @latitude_deg, @longitude_deg);";
+                SQLiteCommand cmd = new SQLiteCommand(q, con);
+
 
                 foreach (DataRow R in table.Rows)
                 {
-                    String q = "INSERT INTO " + tableName + " (name, ident, latitude_deg, longitude_deg)" +
-                        " VALUES(@name, @ident, @latitude_deg, @longitude_deg);";
-                    SQLiteCommand cmd = new SQLiteCommand(q, con);
+                    
                     cmd.Parameters.AddWithValue("@ident", R["ident"].ToString());
                     cmd.Parameters.AddWithValue("@name", R["ident"].ToString());
                     cmd.Parameters.AddWithValue("@latitude_deg", R["latitude_deg"].ToString());
@@ -434,6 +437,9 @@ namespace FSPAirnavDatabaseExporter
 
                     pos = pos + 1;
                 }
+
+                transaction.Commit();
+                cmd.Dispose();
 
                 UpdateMapLocationID(tableName, con);
 
@@ -456,6 +462,7 @@ namespace FSPAirnavDatabaseExporter
             {
                 CreateLogger();
                 con = GetSpatialConnection(databaseFilename, spatialEnabled);
+                SQLiteTransaction transaction = con.BeginTransaction();
                 
                 float count = table.Rows.Count;
                 float pos = 0;
@@ -471,6 +478,9 @@ namespace FSPAirnavDatabaseExporter
 
                     pos = pos + 1;
                 }
+
+                transaction.Commit();
+
 
                 if (mapLocations.Contains(tableName))
                     UpdateMapLocationID(tableName, con);

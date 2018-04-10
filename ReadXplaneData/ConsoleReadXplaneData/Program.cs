@@ -30,8 +30,8 @@ namespace FSPAirnavDatabaseExporter
 
             Boolean test = false;
 
-            //DataDownloader downloader = new DataDownloader(filesPath);
-            //downloader.DownloadFiles();
+            DataDownloader downloader = new DataDownloader(filesPath);
+            downloader.DownloadFiles();
 
             if (!test)
             {
