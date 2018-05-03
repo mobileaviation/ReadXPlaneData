@@ -102,11 +102,13 @@ namespace ConsoleReadXplaneData
         {
             using (StreamWriter file = File.CreateText(filename))
             {
-                file.Write("{" + ((char)34) + "statistics" + ((char)34) + " : " + getStatistics() + ",");
+                file.Write("{");
+                file.Write(((char)34) + "statistics" + ((char)34) + " : " + getStatistics() + ",");
 
-                file.Write("{" + ((char)34) + "airports" + ((char)34) + " : {");
-
+                file.Write(((char)34) + "airports" + ((char)34) + " : {");
                 addAirportsToJson(file);
+
+
 
                 file.Write("} }");
                 file.Close();

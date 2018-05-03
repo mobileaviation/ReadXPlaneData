@@ -101,6 +101,7 @@
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\AirportBase.cs" />
     <Compile Include="Models\Frequency.cs" />
+    <Compile Include="Models\Navaid.cs" />
     <Compile Include="Models\Runway.cs" />
     <Compile Include="Models\Xs.cs" />
     <Compile Include="Program.cs" />
