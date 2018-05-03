@@ -6,6 +6,8 @@ using System.Data.SQLite;
 using NLog;
 using System.Data;
 using FSPAirnavDatabaseExporter.MBTiles;
+using ConsoleReadXplaneData.Firebase;
+using ConsoleReadXplaneData;
 
 namespace FSPAirnavDatabaseExporter
 {
@@ -21,14 +23,16 @@ namespace FSPAirnavDatabaseExporter
 
         static void Main(string[] args)
         {
-            databaseFilename = String.Format(Properties.Settings.Default.Database + "_V{0:0000}{1:00}{2:00}.db",
+            databaseFilename = String.Format(ConsoleReadXplaneData.Properties.Settings.Default.Database + "_V{0:0000}{1:00}{2:00}.db",
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
             log = LogManager.GetCurrentClassLogger();
             log.Info("Start Airnav Database create program");
-            filesPath = Properties.Settings.Default.InputDataDir;
+            filesPath = ConsoleReadXplaneData.Properties.Settings.Default.InputDataDir;
 
             Boolean test = false;
+            Boolean useFirebase = true;
+            Boolean useSQLite = false;
 
             DataDownloader downloader = new DataDownloader(filesPath);
             downloader.DownloadFiles();
@@ -37,17 +41,17 @@ namespace FSPAirnavDatabaseExporter
             {
                 importTypes = new List<ImportTypes>() 
                 {
-                    ImportTypes.mbtiles
-                    ,ImportTypes.airports
-                    //,ImportTypes.continents 
-                    ,ImportTypes.countries
-                    ,ImportTypes.fixes
-                    ,ImportTypes.frequencies
-                    ,ImportTypes.navaids
-                    ,ImportTypes.regions
-                    ,ImportTypes.runways
-                    ,ImportTypes.firs
-                    //ImportTypes.test
+                    //ImportTypes.mbtiles
+                    ImportTypes.airports
+                    ////,ImportTypes.continents 
+                    //,ImportTypes.countries
+                    //,ImportTypes.fixes
+                    //,ImportTypes.frequencies
+                    //,ImportTypes.navaids
+                    //,ImportTypes.regions
+                    //,ImportTypes.runways
+                    //,ImportTypes.firs
+                    ////ImportTypes.test
                 };
 
                 Database.CreateDatabase(databaseFilename);
@@ -152,17 +156,33 @@ namespace FSPAirnavDatabaseExporter
                 if (importTypes.Contains(ImportTypes.airports))
                 {
                     log.Info("start reading airports");
-                    csvReader = new CsvReader();
-                    DataTable airportsTable = csvReader.ReadFile(filesPath + "airports.csv");
+                    
+
+                    
 
                     log.Info("airports file read!");
                     log.Info("*********************************************");
 
                     log.Info("Insert airports in database...");
 
-                    //mapLocationList.Add("tbl_Airports");
-                    Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList, spatialEnabled);
-                    if (spatialEnabled) Database.AddgeomPoint("tbl_Airports", databaseFilename, "", spatialEnabled);
+                    if (useSQLite)
+                    {
+                        csvReader = new CsvReader();
+                        DataTable airportsTable = csvReader.ReadFile(filesPath + "airports.csv");
+                        //mapLocationList.Add("tbl_Airports");
+                        Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList, spatialEnabled);
+                        if (spatialEnabled) Database.AddgeomPoint("tbl_Airports", databaseFilename, "", spatialEnabled);
+                    }
+
+                    if (useFirebase)
+                    {
+                        //FirebaseDBClient.WriteData(airportsTable, ImportTypes.airports);
+                        //String filename = filesPath + "airports.json";
+                        //FirebaseDBClient.SaveAsJson(airportsTable, ImportTypes.airports, filename);
+                        AirportsExport airportsExport = new AirportsExport(filesPath);
+                        airportsExport.CreateAirportJson(filesPath + "airports.json");
+                    }
+
                     log.Info("airports inserted in database!");
                     log.Info("*********************************************");
                 }

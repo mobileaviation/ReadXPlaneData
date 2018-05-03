@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FSPAirnavDatabaseExporter
 {
-    enum ImportTypes
+    public enum ImportTypes
     {
         airports,
         frequencies,
