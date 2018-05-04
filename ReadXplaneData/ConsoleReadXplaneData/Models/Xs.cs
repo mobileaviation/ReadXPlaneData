@@ -21,6 +21,18 @@ namespace ConsoleReadXplaneData.Models
             }
         }
 
+        public static Int64 ToLong(DataRow row, String Field, Int64 Default)
+        {
+            try
+            {
+                return Convert.ToInt64((string.IsNullOrEmpty(row[Field].ToString())) ? Default : row[Field]);
+            }
+            catch (Exception ee)
+            {
+                return Default;
+            }
+        }
+
         public static Double ToDouble(DataRow row, String Field, Double Default)
         {
             try

@@ -94,6 +94,12 @@ namespace ConsoleReadXplaneData
         {
             Statistics s = new Statistics();
             s.AirportsCount = airportsTable.Rows.Count;
+            s.NavaidsCount = navaidsTable.Rows.Count;
+            s.CountriesCount = countriesTable.Rows.Count;
+            s.RegionsCount = regionsTable.Rows.Count;
+            s.FixesCount = fixesTable.Rows.Count;
+            s.MBTilesCount = mbtilesTable.Rows.Count;
+            
 
             return s.getJson();
         }
@@ -102,21 +108,192 @@ namespace ConsoleReadXplaneData
         {
             using (StreamWriter file = File.CreateText(filename))
             {
-                file.Write("{");
-                file.Write(((char)34) + "statistics" + ((char)34) + " : " + getStatistics() + ",");
+                file.WriteLine("{");
+                file.WriteLine(((char)34) + "statistics" + ((char)34) + " : " + getStatistics() + ",");
 
                 file.Write(((char)34) + "airports" + ((char)34) + " : {");
                 addAirportsToJson(file);
+                file.WriteLine("},");
 
+                file.WriteLine(((char)34) + "navaids" + ((char)34) + " : {");
+                addNavaidsToJson(file);
+                file.WriteLine("},");
 
+                file.WriteLine(((char)34) + "regions" + ((char)34) + " : {");
+                addRegionsToJson(file);
+                file.WriteLine("},");
 
-                file.Write("} }");
+                file.WriteLine(((char)34) + "countries" + ((char)34) + " : {");
+                addCountriesToJson(file);
+                file.WriteLine("},");
+
+                file.WriteLine(((char)34) + "fixes" + ((char)34) + " : {");
+                addFixesToJson(file);
+                file.WriteLine("},");
+
+                file.WriteLine(((char)34) + "tiles" + ((char)34) + " : {");
+                addMBTilesToJson(file);
+
+                file.WriteLine("}}");
                 file.Close();
 
-                //airportsJson = airportsJson.TrimEnd(',') + "}";
-                //File.WriteAllText(jsonFile, airportsJson);
                 log.Info("Json File: {0} writen", filename);
             }
+        }
+
+        private StreamWriter addNavaidsToJson(StreamWriter file)
+        {
+            float count = navaidsTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in navaidsTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Navaid navaid = NavaidFactory.GetNavaidFromDatatable(R, index);
+
+                String json = "";
+
+                if (navaid != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + NavaidFactory.GetJsonNavaidFromDatatable(navaid);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Navaid Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
+        }
+
+        private StreamWriter addRegionsToJson(StreamWriter file)
+        {
+            float count = regionsTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in regionsTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Region region = RegionFactory.GetRegionFromDatatable(R, index);
+
+                String json = "";
+
+                if (region != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + RegionFactory.GetJsonRegionFromDatatable(region);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Region Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
+        }
+
+        private StreamWriter addMBTilesToJson(StreamWriter file)
+        {
+            float count = mbtilesTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in mbtilesTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Tile tile = TileFactory.GetTileFromDatatable(R, index);
+
+                String json = "";
+
+                if (tile != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + TileFactory.GetJsonTileFromDatatable(tile);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Tile Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
+        }
+
+        private StreamWriter addCountriesToJson(StreamWriter file)
+        {
+            float count = countriesTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in countriesTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Country country = CountryFactory.GetCountryFromDatatable(R, index);
+
+                String json = "";
+
+                if (country != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + CountryFactory.GetJsonCountryFromDatatable(country);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Country Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
+        }
+
+        private StreamWriter addFixesToJson(StreamWriter file)
+        {
+            float count = fixesTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in fixesTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                 Fix fix = FixFactory.GetFixFromDatatable(R, index);
+
+                String json = "";
+
+                if (fix != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + FixFactory.GetJsonFixFromDatatable(fix);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Fix Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
         }
 
         private StreamWriter addAirportsToJson(StreamWriter file)
@@ -157,7 +334,7 @@ namespace ConsoleReadXplaneData
                 }
 
                 //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
-                log.Info("Progress: {0}%", Math.Abs(progress));
+                log.Info("Airports Progress: {0}%", Math.Abs(progress));
 
             }
 
@@ -184,6 +361,10 @@ namespace ConsoleReadXplaneData
             log.Info("Firs Read");
             readNavaids();
             log.Info("Navaids Read");
+            readFixes();
+            log.Info("Fixes Read");
+            readMBTiles();
+            log.Info("MBTiles Read");
 
             createJson(filename);
         }
@@ -197,6 +378,8 @@ namespace ConsoleReadXplaneData
         public Int32 FixesCount;
         public Int32 MBTilesCount;
         public Int32 PropertiesCount;
+        public Int32 CountriesCount;
+        public Int32 RegionsCount;
 
         public String getJson()
         {
