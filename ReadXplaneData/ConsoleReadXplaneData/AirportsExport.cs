@@ -99,7 +99,7 @@ namespace ConsoleReadXplaneData
             s.RegionsCount = regionsTable.Rows.Count;
             s.FixesCount = fixesTable.Rows.Count;
             s.MBTilesCount = mbtilesTable.Rows.Count;
-            
+            s.FirsCount = firsTable.Rows.Count;
 
             return s.getJson();
         }
@@ -129,6 +129,10 @@ namespace ConsoleReadXplaneData
 
                 file.WriteLine(((char)34) + "fixes" + ((char)34) + " : {");
                 addFixesToJson(file);
+                file.WriteLine("},");
+
+                file.WriteLine(((char)34) + "firs" + ((char)34) + " : {");
+                addFirsToJson(file);
                 file.WriteLine("},");
 
                 file.WriteLine(((char)34) + "tiles" + ((char)34) + " : {");
@@ -296,6 +300,37 @@ namespace ConsoleReadXplaneData
             return file;
         }
 
+        private StreamWriter addFirsToJson(StreamWriter file)
+        {
+            float count = firsTable.Rows.Count;
+            float pos = 0;
+            int index = 0;
+
+            foreach (DataRow R in firsTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Fir fir = FirFactory.GetFirFromDatatable(R, index);
+
+                String json = "";
+
+                if (fir != null)
+                {
+                    json = ((char)34) + index.ToString() + ((char)34) + " : " + FirFactory.GetJsonTileFromDatatable(fir);
+                    index++;
+
+                    file.Write(json);
+                    if (pos < count) file.Write(",");
+                }
+
+                //log.Info("Progress: {0}% Inserted Airport: {1} name: {2}", Math.Abs(progress), R["ident"].ToString(), R["name"].ToString());
+                log.Info("Fir Progress: {0}%", Math.Abs(progress));
+            }
+
+            return file;
+        }
+
         private StreamWriter addAirportsToJson(StreamWriter file)
         {
             float count = airportsTable.Rows.Count;
@@ -380,6 +415,7 @@ namespace ConsoleReadXplaneData
         public Int32 PropertiesCount;
         public Int32 CountriesCount;
         public Int32 RegionsCount;
+        public Int32 FirsCount;
 
         public String getJson()
         {
