@@ -100,6 +100,8 @@ namespace ConsoleReadXplaneData
             s.FixesCount = fixesTable.Rows.Count;
             s.MBTilesCount = mbtilesTable.Rows.Count;
             s.FirsCount = firsTable.Rows.Count;
+            s.AirspacesCount = 15976;
+            s.Version = 20180525;
 
             return s.getJson();
         }
@@ -409,6 +411,7 @@ namespace ConsoleReadXplaneData
     public class Statistics
     {
         public Int32 AirportsCount;
+        public Int32 AirspacesCount;
         public Int32 NavaidsCount;
         public Int32 FixesCount;
         public Int32 MBTilesCount;
@@ -416,6 +419,7 @@ namespace ConsoleReadXplaneData
         public Int32 CountriesCount;
         public Int32 RegionsCount;
         public Int32 FirsCount;
+        public Int32 Version;
 
         public String getJson()
         {
