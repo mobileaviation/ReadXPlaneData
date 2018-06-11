@@ -101,7 +101,10 @@ namespace ConsoleReadXplaneData
             s.MBTilesCount = mbtilesTable.Rows.Count;
             s.FirsCount = firsTable.Rows.Count;
             s.AirspacesCount = 15976;
-            s.Version = 20180525;
+            s.PropertiesCount = 0;
+            s.Version = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));//20180525;
+
+            
 
             return s.getJson();
         }
