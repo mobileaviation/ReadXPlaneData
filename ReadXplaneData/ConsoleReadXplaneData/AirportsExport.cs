@@ -104,7 +104,7 @@ namespace ConsoleReadXplaneData
             s.PropertiesCount = 0;
             s.Version = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));//20180525;
 
-            
+
 
             return s.getJson();
         }
@@ -285,7 +285,7 @@ namespace ConsoleReadXplaneData
                 float progress = (pos / count) * 100;
                 pos = pos + 1;
 
-                 Fix fix = FixFactory.GetFixFromDatatable(R, index);
+                Fix fix = FixFactory.GetFixFromDatatable(R, index);
 
                 String json = "";
 
@@ -381,8 +381,7 @@ namespace ConsoleReadXplaneData
             return file;
         }
 
-
-        public void CreateAirportJson(String filename)
+        private void readCsvFiles()
         {
             log.Info("Read Airports");
             readAirports();
@@ -405,10 +404,92 @@ namespace ConsoleReadXplaneData
             log.Info("Fixes Read");
             readMBTiles();
             log.Info("MBTiles Read");
+        }
 
+
+        public void CreateAirportJson(String filename)
+        {
+            readCsvFiles();
             createJson(filename);
         }
 
+        public void CreateJsonFiles()
+        {
+            readCsvFiles();
+
+            float count = airportsTable.Rows.Count;
+            List<Airport> airports = new List<Airport>();
+            float pos = 0;
+
+            foreach (DataRow R in airportsTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Airport airport = AirportFactory.GetAirportFromDatatable(R, 0);
+                airports.Add(airport);
+            }
+
+            log.Info("Created Airports List");
+
+            String json = JsonConvert.SerializeObject(airports, Formatting.Indented);
+
+            using (StreamWriter file = File.CreateText(basePath + "airports.json"))
+            {
+                file.Write(json);
+                file.Close();
+                log.Info("Created Airports.json file");
+            }
+
+            count = frequenciesTable.Rows.Count;
+            List<Frequency> frequencies = new List<Frequency>();
+            pos = 0;
+
+            foreach (DataRow R in frequenciesTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Frequency frequency = FrequencyFactory.GetFrequencyFromDatatable(R);
+                frequencies.Add(frequency);
+            }
+
+            log.Info("Created Frequencies List");
+
+            json = JsonConvert.SerializeObject(frequencies, Formatting.Indented);
+
+            using (StreamWriter file = File.CreateText(basePath + "frequencies.json"))
+            {
+                file.Write(json);
+                file.Close();
+                log.Info("Created frequencies.json file");
+            }
+
+            count = runwaysTable.Rows.Count;
+            List<Runway> runways = new List<Runway>();
+            pos = 0;
+
+            foreach (DataRow R in runwaysTable.Rows)
+            {
+                float progress = (pos / count) * 100;
+                pos = pos + 1;
+
+                Runway runway = RunwayFactory.GetRunwayFromDatatable(R);
+                runways.Add(runway);
+            }
+
+            log.Info("Created Runways List");
+
+            json = JsonConvert.SerializeObject(runways, Formatting.Indented);
+
+            using (StreamWriter file = File.CreateText(basePath + "runways.json"))
+            {
+                file.Write(json);
+                file.Close();
+                log.Info("Created runways.json file");
+            }
+
+        }
     }
 
     public class Statistics

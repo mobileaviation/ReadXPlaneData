@@ -93,6 +93,7 @@
     <Compile Include="CsvReader.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DataDownloader.cs" />
+    <Compile Include="ExportType.cs" />
     <Compile Include="Firebase\FirebaseClient.cs" />
     <Compile Include="ImportTypes.cs" />
     <Compile Include="MBTiles\MbTile.cs" />
