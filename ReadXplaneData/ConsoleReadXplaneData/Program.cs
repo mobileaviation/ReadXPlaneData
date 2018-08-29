@@ -5,9 +5,11 @@ using System.Text;
 using System.Data.SQLite;
 using NLog;
 using System.Data;
+using System.Data.Entity;
 using FSPAirnavDatabaseExporter.MBTiles;
 using ConsoleReadXplaneData.Firebase;
 using ConsoleReadXplaneData;
+using ConsoleReadXplaneData.EF;
 
 namespace FSPAirnavDatabaseExporter
 {
@@ -33,7 +35,7 @@ namespace FSPAirnavDatabaseExporter
             Boolean test = false;
             Boolean download = true;
 
-            ExportType exportType = ExportType.FirebaseJson;
+            ExportType exportType = ExportType.MsSql;
 
             if (download)
             {
@@ -287,6 +289,15 @@ namespace FSPAirnavDatabaseExporter
                             Console.ReadKey();
                             AirportsExport airportsExport = new AirportsExport(filesPath);
                             airportsExport.CreateJsonFiles();
+                        }
+                        else
+                        {
+                            if (exportType == ExportType.MsSql)
+                            {
+                                EFDatabase eFDatabase = new EFDatabase(filesPath);
+                                eFDatabase.Process();
+                            }
+
                         }
                     }
                 }

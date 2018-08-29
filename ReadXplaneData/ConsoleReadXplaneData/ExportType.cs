@@ -10,6 +10,7 @@ namespace ConsoleReadXplaneData
     {
         SqLiteDatabase,
         FirebaseJson,
-        Json
+        Json,
+        MsSql
     }
 }

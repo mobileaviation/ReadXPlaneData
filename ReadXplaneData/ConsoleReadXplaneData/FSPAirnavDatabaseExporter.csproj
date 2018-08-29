@@ -82,6 +82,8 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,6 +95,17 @@
     <Compile Include="CsvReader.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DataDownloader.cs" />
+    <Compile Include="EF\AirNavDB.cs" />
+    <Compile Include="EF\EFDatabase.cs" />
+    <Compile Include="EF\Models\EFAirport.cs" />
+    <Compile Include="EF\Models\EFCountry.cs" />
+    <Compile Include="EF\Models\EFFir.cs" />
+    <Compile Include="EF\Models\EFFix.cs" />
+    <Compile Include="EF\Models\EFFrequency.cs" />
+    <Compile Include="EF\Models\EFNavaid.cs" />
+    <Compile Include="EF\Models\EFRegion.cs" />
+    <Compile Include="EF\Models\EFRunway.cs" />
+    <Compile Include="EF\Models\EFTile.cs" />
     <Compile Include="ExportType.cs" />
     <Compile Include="Firebase\FirebaseClient.cs" />
     <Compile Include="ImportTypes.cs" />
