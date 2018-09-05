@@ -1,20 +1,44 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSPAirnavDatabaseExporter", "ConsoleReadXplaneData\FSPAirnavDatabaseExporter.csproj", "{A5563F5D-0752-4321-8B84-D9D9946A9917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSPAirspacesDatabaseExporter", "FSPAirspacesDatabaseExporter\FSPAirspacesDatabaseExporter.csproj", "{D13ABA4C-17DC-4755-8D16-D72521AF09DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSPService", "FSPService\FSPService.csproj", "{A4B448FB-3C83-4580-A2E4-AABF5F583B01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Debug|x86.ActiveCfg = Debug|x86
 		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Debug|x86.Build.0 = Debug|x86
+		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Release|Any CPU.ActiveCfg = Release|x86
 		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Release|x86.ActiveCfg = Release|x86
 		{A5563F5D-0752-4321-8B84-D9D9946A9917}.Release|x86.Build.0 = Release|x86
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{D13ABA4C-17DC-4755-8D16-D72521AF09DA}.Release|x86.Build.0 = Release|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4B448FB-3C83-4580-A2E4-AABF5F583B01}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
