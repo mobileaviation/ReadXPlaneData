@@ -10,10 +10,12 @@ namespace ConsoleReadXplaneData.EF.Models
     public class EFRunway
     {
         [Key]
-        public Int32 _id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Int32 id { get; set; }
         [Index]
+        [ForeignKey("airport")]
         public Int32 airport_ref { get; set; }
+        public EFAirport airport { get; set; }
         public String airport_ident { get; set; }
         public Int32 length_ft { get; set; }
         public Int32 width_ft { get; set; }

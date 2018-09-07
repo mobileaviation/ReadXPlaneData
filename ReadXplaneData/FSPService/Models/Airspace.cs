@@ -35,17 +35,22 @@ namespace FSPService.Models
 
         public DbGeometry GetDBGeometry()
         {
-            DbGeometry g = DbGeometry.FromText(new WKTWriter().Write(geometry));
+            getGeometry();
+            DbGeometry g = null;
+            if (geometry!= null)
+            {
+                g = DbGeometry.FromText(new WKTWriter().Write(geometry));
+            }
             return g;
         }
 
-        public IGeometry getGeometry()
+        public void getGeometry()
         {
             if (geometry == null)
             {
                 if (coordinates.Count() == 0)
                 {
-                    return null;
+                    return;
                 }
                 if ((coordinates[0].X != coordinates[coordinates.Count() - 1].X) ||
                         (coordinates[0].Y != coordinates[coordinates.Count() - 1].Y))
@@ -64,7 +69,6 @@ namespace FSPService.Models
                     
                 }
             }
-            return geometry;
         }
     }
 }

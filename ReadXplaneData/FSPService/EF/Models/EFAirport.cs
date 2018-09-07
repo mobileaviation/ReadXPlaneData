@@ -1,5 +1,6 @@
 ﻿using ConsoleReadXplaneData.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -10,7 +11,7 @@ namespace ConsoleReadXplaneData.EF.Models
     public class EFAirport
     {
         [Key]
-        public Int32 _id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Int32 id { get; set; }
         [Column(TypeName = "NVARCHAR")]
         [StringLength(10)]
@@ -34,6 +35,9 @@ namespace ConsoleReadXplaneData.EF.Models
         public String home_link { get; set; }
         public String wikipedia_link { get; set; }
         public String keywords { get; set; }
+
+        public ICollection<EFRunway> runways { get; set; }
+        public ICollection<EFFrequency> frequencies { get; set; }
     }
 
     public static class AirportFactory

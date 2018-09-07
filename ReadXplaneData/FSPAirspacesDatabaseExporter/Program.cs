@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using ConsoleReadXplaneData.EF;
 
 namespace FSPAirspacesDatabaseExporter
 {
@@ -15,8 +16,13 @@ namespace FSPAirspacesDatabaseExporter
             Logger log = LogManager.GetCurrentClassLogger();
 
             log.Info("Start importing Airspaces");
-            Airspaces airspaces = new Airspaces();
-            airspaces.processAirspaceFile(@"C:\AirnavData\Airspaces\EHv18_3.txt", "NLD");
+            String basepath = @"C:\AirnavData\Airspaces\";
+
+            EFDatabase database = new EFDatabase(basepath);
+
+            Downloader downloader = new Downloader();
+            if (downloader.DownloadXSourLinks(basepath))
+                database.ProcessAirspaces(downloader.Links);
 
             Console.ReadKey();
         }

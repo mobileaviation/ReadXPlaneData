@@ -78,7 +78,10 @@ namespace FSPService
                                 airspace.version = "0";
                                 airspace.id = 0;
                                 String c = l.Replace("AC ", "").Trim();
-                                airspace.category = (AirspaceCategory)Enum.Parse(typeof(AirspaceCategory), Helpers.findRegex("[A-Za-z]+\\w|[A-Za-z]", c), true);
+                                c = Helpers.findRegex("[A-Za-z]+\\w|[A-Za-z]", c);
+                                airspace.category = (Enum.IsDefined(typeof(AirspaceCategory), c)) ? 
+                                    (AirspaceCategory)Enum.Parse(typeof(AirspaceCategory), c) : AirspaceCategory.UKN;
+                                //airspace.category = (AirspaceCategory)Enum.Parse(typeof(AirspaceCategory), Helpers.findRegex("[A-Za-z]+\\w|[A-Za-z]", c), true);
                             }
                             if (l.StartsWith("AN "))
                             {

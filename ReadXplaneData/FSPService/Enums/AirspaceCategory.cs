@@ -38,6 +38,7 @@ namespace FSPService.Enums
         RMZ,
         Z,
         ZP,
-        UKN
+        UKN,
+        IGA
     }
 }

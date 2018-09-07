@@ -94,6 +94,7 @@
     <Compile Include="EF\Models\EFFir.cs" />
     <Compile Include="EF\Models\EFFix.cs" />
     <Compile Include="EF\Models\EFFrequency.cs" />
+    <Compile Include="EF\Models\EFLink.cs" />
     <Compile Include="EF\Models\EFNavaid.cs" />
     <Compile Include="EF\Models\EFRegion.cs" />
     <Compile Include="EF\Models\EFRunway.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Enums\AirspaceCategory.cs" />
     <Compile Include="Enums\AltitudeReference.cs" />
     <Compile Include="Enums\AltitudeUnit.cs" />
+    <Compile Include="ImportTypes.cs" />
     <Compile Include="MBTiles\MbTile.cs" />
     <Compile Include="MBTiles\MBTileType.cs" />
     <Compile Include="MBTiles\ReadMBTiles.cs" />

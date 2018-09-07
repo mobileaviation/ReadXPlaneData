@@ -49,7 +49,6 @@ namespace FSPAirnavDatabaseExporter
                 {
                     ImportTypes.mbtiles
                     ,ImportTypes.airports
-                    ////,ImportTypes.continents 
                     ,ImportTypes.countries
                     ,ImportTypes.fixes
                     ,ImportTypes.frequencies
@@ -295,7 +294,7 @@ namespace FSPAirnavDatabaseExporter
                             if (exportType == ExportType.MsSql)
                             {
                                 EFDatabase eFDatabase = new EFDatabase(filesPath);
-                                eFDatabase.Process();
+                                eFDatabase.Process(importTypes);
                             }
 
                         }

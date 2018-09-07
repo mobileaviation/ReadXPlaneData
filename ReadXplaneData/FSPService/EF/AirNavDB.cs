@@ -2,6 +2,7 @@ namespace ConsoleReadXplaneData.EF
 {
     using ConsoleReadXplaneData.EF.Models;
     using ConsoleReadXplaneData.Models;
+    using FSPService.EF.Models;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -34,6 +35,8 @@ namespace ConsoleReadXplaneData.EF
         public virtual DbSet<EFRegion> regions { get; set; }
         public virtual DbSet<EFTile> tiles { get; set; }
         public virtual DbSet<EFFir> firs { get; set; }
+        public virtual DbSet<EFAirspace> airspaces { get; set; }
+        public virtual DbSet<EFLink> links { get; set; }
 
     }
 }
