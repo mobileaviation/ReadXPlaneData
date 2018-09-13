@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using NLog;
 using GeoAPI.Geometries;
 using System.IO;
+using System.Globalization;
 
 namespace FSPService
 {
@@ -129,9 +130,9 @@ namespace FSPService
                             if (l.StartsWith("DA "))
                             {
                                 String[] be = l.Split(',');
-                                Double begin = Convert.ToDouble(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[1]));
-                                Double end = Convert.ToDouble(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[2]));
-                                Double distance = Convert.ToDouble(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[0]));
+                                Double begin = double.Parse(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[1]), CultureInfo.InvariantCulture);
+                                Double end = double.Parse(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[2]), CultureInfo.InvariantCulture);
+                                Double distance = double.Parse(Helpers.findRegex("([0-9.]+\\w)|([0-9])", be[0]), CultureInfo.InvariantCulture);
                                 airspace.coordinates.AddRange(GeometricHelpers.drawArc(begin, end, distance, center, cw));
                                 circle = false;
                             }
@@ -154,7 +155,7 @@ namespace FSPService
                                 if (airspace != null)
                                 {
                                     String m = Helpers.findRegex("([0-9.]+\\w)|([0-9])", l);
-                                    airspace.coordinates.AddRange(GeometricHelpers.drawCircle(center, Convert.ToDouble(m)));
+                                    airspace.coordinates.AddRange(GeometricHelpers.drawCircle(center, double.Parse(m, CultureInfo.InvariantCulture)));
                                     circle = true;
                                 }
                             }
