@@ -159,6 +159,32 @@ namespace FSPService
                                     circle = true;
                                 }
                             }
+                            if (l.StartsWith("AP ") || l.StartsWith("AP! "))
+                            {
+                                // Active period from data to data
+                                // AP 01.01.2018.00:00Z-31.12.2018.23:59Z
+                            }
+                            if (l.StartsWith("AW "))
+                            {
+                                //AF 132.350 Dutch Mil
+                                //AW MON.08:00L - 23:59L
+                                //AW TUE.08:00L - 23:59L
+                                //AW WED.08:00L - 23:59L
+                                //AW THU.08:00L - 23:59L
+                                //AW FRI.08:00L - 16:59L
+                                // Activity period per day (days not in list = airspace not active)
+                            }
+                            if (l.StartsWith("AF "))
+                            {
+                                // AF 132.350 Dutch Mil
+                                // Frequency and stationname
+                            }
+                            if (l.StartsWith("AX "))
+                            {
+                                //AX 7000
+                                // Mandatory Transponder code
+                            }
+
                             //                if (l.startsWith("SP"))
                             //                {
                             //                    // What if SP becomes before AN ??????????????
