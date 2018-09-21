@@ -13,6 +13,13 @@ namespace FSPService.EF.Models
     [Table("tbl_Airspaces")]
     public class EFAirspace
     {
+        public EFAirspace()
+        {
+            activePeriods = new List<EFActivePeriod>();
+            activeDays = new List<EFActiveDay>();
+            atcStations = new List<EFATCStation>();
+        }
+
         [Key]
         public long id { get; set; }
         public String name { get; set; }
@@ -27,6 +34,38 @@ namespace FSPService.EF.Models
         public String altLimit_bottom_unit { get; set; }
         public String altLimit_bottom_ref { get; set; }
         public DbGeometry geometry { get; set; }
+        public ICollection<EFActivePeriod> activePeriods { get; set; }
+        public ICollection<EFActiveDay> activeDays { get; set; }
+        public ICollection<EFATCStation> atcStations { get; set; }
+    }
+
+    [Table("tbl_ATCStations")]
+    public class EFATCStation
+    {
+        [Key]
+        public long id { get; set; }
+        public string frequency;
+        public string stationname;
+    }
+
+    [Table("tbl_ActivePeriods")]
+    public class EFActivePeriod
+    {
+        [Key]
+        public long id { get; set; }
+        public DateTime start;
+        public DateTime end;
+        public TimeZone timeZone;
+    }
+
+    [Table("tbl_ActiveDays")]
+    public class EFActiveDay
+    {
+        [Key]
+        public long id { get; set; }
+        public string day;
+        public TimeSpan period;
+        public TimeZone TimeZone;
     }
 
     public class AirspaceFactory
@@ -49,6 +88,38 @@ namespace FSPService.EF.Models
             a.geometry = airspace.GetDBGeometry();
 
             return a;
+        }
+
+        public static EFATCStation GetEFATCStation(ATCStation atcStation)
+        {
+            EFATCStation efAtcStation = new EFATCStation();
+
+            efAtcStation.frequency = atcStation.frequency;
+            efAtcStation.stationname = atcStation.stationname;
+
+            return efAtcStation;
+        }
+
+        public static EFActivePeriod GetEFActivePeriod(ActivePeriod activePeriod)
+        {
+            EFActivePeriod _activePeriod = new EFActivePeriod();
+
+            _activePeriod.start = activePeriod.start;
+            _activePeriod.end = activePeriod.end;
+            _activePeriod.timeZone = activePeriod.timeZone;
+
+            return _activePeriod;
+        }
+
+        public static EFActiveDay GetEFActiveDay(ActiveDay activeDay)
+        {
+            EFActiveDay eFActiveDay = new EFActiveDay();
+
+            eFActiveDay.day = activeDay.day;
+            eFActiveDay.period = activeDay.period;
+            eFActiveDay.TimeZone = activeDay.TimeZone;
+
+            return eFActiveDay;
         }
     }
 }

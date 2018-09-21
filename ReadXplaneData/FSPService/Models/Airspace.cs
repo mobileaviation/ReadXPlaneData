@@ -16,6 +16,9 @@ namespace FSPService.Models
         public Airspace()
         {
             coordinates = new List<Coordinate>();
+            atcStations = new List<ATCStation>();
+            activePeriods = new List<ActivePeriod>();
+            activeDays = new List<ActiveDay>();
         }
 
         public long id;
@@ -32,6 +35,11 @@ namespace FSPService.Models
         public AltitudeReference altLimit_bottom_ref;
         public IGeometry geometry { get; set; }
         public List<Coordinate> coordinates;
+
+        public List<ATCStation> atcStations;
+        public List<ActivePeriod> activePeriods;
+        public List<ActiveDay> activeDays;
+
 
         public DbGeometry GetDBGeometry()
         {
@@ -70,5 +78,25 @@ namespace FSPService.Models
                 }
             }
         }
+    }
+
+    public class ATCStation
+    {
+        public string frequency;
+        public string stationname;
+    }
+
+    public class ActivePeriod
+    {
+        public DateTime start;
+        public DateTime end;
+        public TimeZone timeZone;
+    }
+
+    public class ActiveDay
+    {
+        public string day;
+        public TimeSpan period;
+        public TimeZone TimeZone;
     }
 }

@@ -166,7 +166,6 @@ namespace FSPService
                             }
                             if (l.StartsWith("AW "))
                             {
-                                //AF 132.350 Dutch Mil
                                 //AW MON.08:00L - 23:59L
                                 //AW TUE.08:00L - 23:59L
                                 //AW WED.08:00L - 23:59L

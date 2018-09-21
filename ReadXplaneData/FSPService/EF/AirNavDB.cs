@@ -36,6 +36,9 @@ namespace ConsoleReadXplaneData.EF
         public virtual DbSet<EFTile> tiles { get; set; }
         public virtual DbSet<EFFir> firs { get; set; }
         public virtual DbSet<EFAirspace> airspaces { get; set; }
+        public virtual DbSet<EFActivePeriod> activePeriods { get; set; }
+        public virtual DbSet<EFActiveDay> activeDays { get; set; }
+        public virtual DbSet<EFATCStation> atcStations { get; set; }
         public virtual DbSet<EFLink> links { get; set; }
 
     }
