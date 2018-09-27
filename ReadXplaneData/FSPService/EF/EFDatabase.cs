@@ -447,6 +447,23 @@ namespace ConsoleReadXplaneData.EF
             foreach (Airspace airspace in airspaces)
             {
                 EFAirspace efairspace = AirspaceFactory.GetEFAirspace(airspace);
+
+                foreach (ATCStation atcStation in airspace.atcStations)
+                {
+                    efairspace.atcStations.Add(AirspaceFactory.GetEFATCStation(atcStation));
+                }
+
+                foreach (ActiveDay activeDay in airspace.activeDays)
+                {
+                    efairspace.activeDays.Add(AirspaceFactory.GetEFActiveDay(activeDay));
+                }
+
+                foreach (ActivePeriod activePeriod in airspace.activePeriods)
+                {
+                    efairspace.activePeriods.Add(AirspaceFactory.GetEFActivePeriod(activePeriod));
+                }
+
+                //EFATCStation atcStation = AirspaceFactory.GetEFATCStation()
                 //var q = from ap in db.airspaces
                 //        where ap.name == efairspace.name
                 //        select ap;
@@ -454,7 +471,7 @@ namespace ConsoleReadXplaneData.EF
 
                 //if (check_airspace == null)
                 //{
-                    db.airspaces.Add(efairspace);
+                db.airspaces.Add(efairspace);
                     log.Info("Add Airspace: {0} to database", efairspace.name);
                 //}
 

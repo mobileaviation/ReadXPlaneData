@@ -33,6 +33,7 @@ namespace FSPService.Models
         public long altLimit_bottom;
         public AltitudeUnit altLimit_bottom_unit;
         public AltitudeReference altLimit_bottom_ref;
+        public String transponder_mandatory_code;
         public IGeometry geometry { get; set; }
         public List<Coordinate> coordinates;
 
@@ -90,13 +91,14 @@ namespace FSPService.Models
     {
         public DateTime start;
         public DateTime end;
-        public TimeZone timeZone;
+        public String timeZone;
     }
 
     public class ActiveDay
     {
         public string day;
-        public TimeSpan period;
-        public TimeZone TimeZone;
+        public TimeSpan start;
+        public TimeSpan end;
+        public String timeZone;
     }
 }

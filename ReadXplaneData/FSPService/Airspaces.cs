@@ -163,9 +163,38 @@ namespace FSPService
                             {
                                 // Active period from data to data
                                 // AP 01.01.2018.00:00Z-31.12.2018.23:59Z
+                                String s = l.Replace("AP ", "");
+                                s = s.Replace("AP! ", "");
+                                String start = s.Split('-')[0].Trim();
+                                string startTimezone = start.Substring(start.Length - 1, 1);
+                                start = start.Substring(0, start.Length - 1);
+                                String end = s.Split('-')[1].Trim();
+                                end = end.Substring(0, end.Length - 1);
+
+
+                                ActivePeriod activePeriod = new ActivePeriod();
+                                activePeriod.start = DateTime.ParseExact(start, "dd.MM.yyyy.HH:mm", CultureInfo.InvariantCulture);
+                                activePeriod.end = DateTime.ParseExact(end, "dd.MM.yyyy.HH:mm", CultureInfo.InvariantCulture);
+                                activePeriod.timeZone = startTimezone;
+                                airspace.activePeriods.Add(activePeriod);
+
                             }
                             if (l.StartsWith("AW "))
                             {
+                                String s = l.Replace("AW ", "");
+                                String day = s.Split('.')[0];
+                                String period = s.Split('.')[1];
+                                String start = period.Split('-')[0].Trim();
+                                String end = period.Split('-')[1].Trim();
+
+                                ActiveDay activeDay = new ActiveDay();
+                                activeDay.start = DateTime.ParseExact(start.Substring(0,5), "HH:mm", CultureInfo.InvariantCulture).TimeOfDay;
+                                activeDay.end = DateTime.ParseExact(end.Substring(0, 5), "HH:mm", CultureInfo.InvariantCulture).TimeOfDay;
+                                activeDay.day = day;
+                                activeDay.timeZone = "L";
+
+                                airspace.activeDays.Add(activeDay);
+                                   
                                 //AW MON.08:00L - 23:59L
                                 //AW TUE.08:00L - 23:59L
                                 //AW WED.08:00L - 23:59L
@@ -177,16 +206,30 @@ namespace FSPService
                             {
                                 // AF 132.350 Dutch Mil
                                 // Frequency and stationname
+                                String s = l.Replace("AF ", "");
+                                String freq = Helpers.findRegex("([0-9.]+\\w)|([0-9])", s);
+
+                                String stationname = s.Replace(freq, "").Trim();
+
+                                ATCStation atcStation = new ATCStation();
+                                atcStation.frequency = freq;
+                                atcStation.stationname = stationname;
+                                airspace.atcStations.Add(atcStation);
+
                             }
                             if (l.StartsWith("AX "))
                             {
                                 //AX 7000
                                 // Mandatory Transponder code
+                                String code = Helpers.findRegex("([0-9.]+\\w)", l);
+
+                                airspace.transponder_mandatory_code = code;
+
                             }
 
                             //                if (l.startsWith("SP"))
                             //                {
-                            //                    // What if SP becomes before AN ??????????????
+                            //                    // What if SP comes before AN ??????????????
                             //
                             //                    // We need to check if the SP is just a pen setting which means this iy does not belong to a specific airspace
                             //                    // If it does not belong to an airspace than delete this airspace

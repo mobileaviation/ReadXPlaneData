@@ -13,12 +13,14 @@ namespace FSPAirspacesDatabaseExporter
 {
     public class Downloader
     {
-        public Downloader()
+        public Downloader(String countryCode)
         {
+            this.countryCode_Filter = countryCode;
             log = LogManager.GetCurrentClassLogger();
         }
 
         private List<EFLink> links;
+        private String countryCode_Filter;
         public List<EFLink> Links { get { return links; } }
         private Logger log;
 
@@ -26,11 +28,23 @@ namespace FSPAirspacesDatabaseExporter
         {
             using (AirNavDB db = new AirNavDB())
             {
-                var links = from l in db.links
-                            where l.enabled == true
-                            select l;
+                if (countryCode_Filter.Length > 0)
+                {
+                    var links = from l in db.links
+                                where l.enabled == true
+                                && l.countrycode==countryCode_Filter
+                                select l;
 
-                this.links = links.ToList();
+                    this.links = links.ToList();
+                }
+                else
+                {
+                    var links = from l in db.links
+                                where l.enabled == true
+                                select l;
+
+                    this.links = links.ToList();
+                }
             }
         }
 

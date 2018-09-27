@@ -1,6 +1,7 @@
 ﻿using FSPService.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
@@ -33,6 +34,7 @@ namespace FSPService.EF.Models
         public long altLimit_bottom { get; set; }
         public String altLimit_bottom_unit { get; set; }
         public String altLimit_bottom_ref { get; set; }
+        public String transponder_mandatory_code { get; set; }
         public DbGeometry geometry { get; set; }
         public ICollection<EFActivePeriod> activePeriods { get; set; }
         public ICollection<EFActiveDay> activeDays { get; set; }
@@ -44,8 +46,8 @@ namespace FSPService.EF.Models
     {
         [Key]
         public long id { get; set; }
-        public string frequency;
-        public string stationname;
+        public string frequency { get; set; }
+        public string stationname { get; set; }
     }
 
     [Table("tbl_ActivePeriods")]
@@ -53,9 +55,9 @@ namespace FSPService.EF.Models
     {
         [Key]
         public long id { get; set; }
-        public DateTime start;
-        public DateTime end;
-        public TimeZone timeZone;
+        public DateTime start { get; set; }
+        public DateTime end { get; set; }
+        public String timezone { get; set; }
     }
 
     [Table("tbl_ActiveDays")]
@@ -63,9 +65,10 @@ namespace FSPService.EF.Models
     {
         [Key]
         public long id { get; set; }
-        public string day;
-        public TimeSpan period;
-        public TimeZone TimeZone;
+        public string day { get; set; }
+        public TimeSpan start { get; set; }
+        public TimeSpan end { get; set; }
+        public String timezone { get; set; }
     }
 
     public class AirspaceFactory
@@ -85,6 +88,7 @@ namespace FSPService.EF.Models
             a.name = airspace.name;
             a.version = airspace.version;
             a.country = airspace.country;
+            a.transponder_mandatory_code = airspace.transponder_mandatory_code;
             a.geometry = airspace.GetDBGeometry();
 
             return a;
@@ -106,7 +110,7 @@ namespace FSPService.EF.Models
 
             _activePeriod.start = activePeriod.start;
             _activePeriod.end = activePeriod.end;
-            _activePeriod.timeZone = activePeriod.timeZone;
+            _activePeriod.timezone = activePeriod.timeZone;
 
             return _activePeriod;
         }
@@ -116,8 +120,9 @@ namespace FSPService.EF.Models
             EFActiveDay eFActiveDay = new EFActiveDay();
 
             eFActiveDay.day = activeDay.day;
-            eFActiveDay.period = activeDay.period;
-            eFActiveDay.TimeZone = activeDay.TimeZone;
+            eFActiveDay.start = activeDay.start;
+            eFActiveDay.end = activeDay.end;
+            eFActiveDay.timezone = activeDay.timeZone;
 
             return eFActiveDay;
         }

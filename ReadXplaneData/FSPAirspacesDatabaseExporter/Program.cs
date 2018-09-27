@@ -25,7 +25,7 @@ namespace FSPAirspacesDatabaseExporter
 
                 EFDatabase database = new EFDatabase(basepath);
 
-                Downloader downloader = new Downloader();
+                Downloader downloader = new Downloader("");
                 if (downloader.DownloadXSourLinks(basepath))
                     database.ProcessAirspaces(downloader.Links);
             }
