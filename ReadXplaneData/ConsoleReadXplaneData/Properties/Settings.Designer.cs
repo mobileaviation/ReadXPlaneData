@@ -50,5 +50,26 @@ namespace ConsoleReadXplaneData.Properties {
                 return ((string)(this["conn"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>cities5000</string>
+  <string>mbtiles</string>
+  <string>airports</string>
+  <string>countries</string>
+  <string>fixes</string>
+  <string>frequencies</string>
+  <string>navaids</string>
+  <string>regions</string>
+  <string>runways</string>
+  <string>firs</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection InportTypes {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["InportTypes"]));
+            }
+        }
     }
 }

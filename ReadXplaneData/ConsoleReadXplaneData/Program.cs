@@ -45,20 +45,12 @@ namespace FSPAirnavDatabaseExporter
 
             if (!test)
             {
-                importTypes = new List<ImportTypes>()
+                importTypes = new List<ImportTypes>();
+                foreach (String t in ConsoleReadXplaneData.Properties.Settings.Default.InportTypes)
                 {
-                    ImportTypes.cities5000
-                    ,ImportTypes.mbtiles
-                    ,ImportTypes.airports
-                    ,ImportTypes.countries
-                    ,ImportTypes.fixes
-                    ,ImportTypes.frequencies
-                    ,ImportTypes.navaids
-                    ,ImportTypes.regions
-                    ,ImportTypes.runways
-                    ,ImportTypes.firs
-                    //ImportTypes.test
-                };
+                    ImportTypes type;
+                    if (Enum.TryParse(t, out type)) importTypes.Add(type);
+                }
 
                 if (exportType == ExportType.FirebaseJson)
                 {

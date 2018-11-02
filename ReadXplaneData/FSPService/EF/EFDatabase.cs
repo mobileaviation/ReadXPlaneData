@@ -95,6 +95,7 @@ namespace ConsoleReadXplaneData.EF
         {
             ReadMBTiles reader = new ReadMBTiles();
             mbtilesTable = reader.Process();
+            int test = 0;
         }
 
         private void readFixes()
