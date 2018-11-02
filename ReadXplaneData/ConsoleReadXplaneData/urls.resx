@@ -120,6 +120,9 @@
   <data name="airports" xml:space="preserve">
     <value>http://ourairports.com/data/airports.csv</value>
   </data>
+  <data name="cities5000" xml:space="preserve">
+    <value>http://download.geonames.org/export/dump/cities5000.zip</value>
+  </data>
   <data name="countries" xml:space="preserve">
     <value>http://ourairports.com/data/countries.csv</value>
   </data>

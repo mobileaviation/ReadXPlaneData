@@ -69,7 +69,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.109.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -84,12 +84,14 @@
     <Compile Include="Airspaces.cs" />
     <Compile Include="Classes\Helpers.cs" />
     <Compile Include="Classes\LatLng.cs" />
+    <Compile Include="Compression\Unzip.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="EF\AirNavDB.cs" />
     <Compile Include="EF\EFDatabase.cs" />
     <Compile Include="EF\Models\EFAirport.cs" />
     <Compile Include="EF\Models\EFAirspace.cs" />
+    <Compile Include="EF\Models\EFCity.cs" />
     <Compile Include="EF\Models\EFCountry.cs" />
     <Compile Include="EF\Models\EFFir.cs" />
     <Compile Include="EF\Models\EFFix.cs" />

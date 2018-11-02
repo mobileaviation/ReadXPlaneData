@@ -12,11 +12,19 @@ namespace FSPAirnavDatabaseExporter
     {
         private StreamReader reader;
         private DataTable table;
+        private delimiter delimiter;
 
-        public CsvReader()
+        public CsvReader(delimiter delimiter)
         {
             CreateLogger();
+            this.delimiter = delimiter;
         }
+
+        public void prepColumns(String columns)
+        {
+            this.columns = columns.Split(',');
+        }
+        private String[] columns;
 
         private static Logger log;
         private static void CreateLogger()
@@ -28,23 +36,35 @@ namespace FSPAirnavDatabaseExporter
         {
             reader = new StreamReader(File.OpenRead(filename));
             table = new DataTable();
-            bool addRows = true;
+            bool addHeaders = true;;
+            char splitchar = ',';
+            if (delimiter == delimiter.comma) splitchar = ',';
+            if (delimiter == delimiter.tab) splitchar = Convert.ToChar(9);
+
+            if (columns != null)
+            {
+                addHeaders = false;
+                foreach (string s in columns)
+                {
+                    table.Columns.Add(s, typeof(string));
+                }
+            }
 
             log.Info("Opened: {0}", filename);
 
             while (!reader.EndOfStream)
             {
                 String lines = reader.ReadLine();
-                String[] values = lines.Split(',');
+                String[] values = lines.Split(splitchar);
 
-                if (addRows)
+                if (addHeaders)
                 {
                     foreach (string s in values)
                     {
                         if (s != "")
                         table.Columns.Add(s.Replace(@"""", ""), typeof(string));
                     }
-                    addRows = false;
+                    addHeaders = false;
                 }
                 else
                 {
@@ -62,5 +82,11 @@ namespace FSPAirnavDatabaseExporter
             }
             return table;
         }
+    }
+
+    public enum delimiter
+    {
+        comma,
+        tab
     }
 }

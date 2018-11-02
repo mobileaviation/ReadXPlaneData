@@ -47,7 +47,8 @@ namespace FSPAirnavDatabaseExporter
             {
                 importTypes = new List<ImportTypes>()
                 {
-                    ImportTypes.mbtiles
+                    ImportTypes.cities5000
+                    ,ImportTypes.mbtiles
                     ,ImportTypes.airports
                     ,ImportTypes.countries
                     ,ImportTypes.fixes
@@ -118,7 +119,7 @@ namespace FSPAirnavDatabaseExporter
 
                         if (importTypes.Contains(ImportTypes.regions))
                         {
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             log.Info("start reading regions");
                             DataTable regionsTable = csvReader.ReadFile(filesPath + "regions.csv");
 
@@ -136,7 +137,7 @@ namespace FSPAirnavDatabaseExporter
                         // *************************************************************************************
                         if (importTypes.Contains(ImportTypes.firs))
                         {
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             log.Info("start reading firs");
                             DataTable regionsTable = csvReader.ReadFile(@"data\" + "fir.csv");
 
@@ -155,7 +156,7 @@ namespace FSPAirnavDatabaseExporter
                         if (importTypes.Contains(ImportTypes.countries))
                         {
                             log.Info("start reading countries");
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             DataTable countriesTable = csvReader.ReadFile(filesPath + "countries.csv");
 
                             log.Info("Countries file read!");
@@ -181,7 +182,7 @@ namespace FSPAirnavDatabaseExporter
 
                             log.Info("Insert airports in database...");
 
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             DataTable airportsTable = csvReader.ReadFile(filesPath + "airports.csv");
                             //mapLocationList.Add("tbl_Airports");
                             Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList, spatialEnabled);
@@ -206,7 +207,7 @@ namespace FSPAirnavDatabaseExporter
                         if (importTypes.Contains(ImportTypes.navaids))
                         {
                             log.Info("start reading Navaids");
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             DataTable navaidsTable = csvReader.ReadFile(filesPath + "navaids.csv");
 
                             log.Info("Navaids file read!");
@@ -226,7 +227,7 @@ namespace FSPAirnavDatabaseExporter
                         if (importTypes.Contains(ImportTypes.runways))
                         {
                             log.Info("start reading runways");
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             DataTable runwaysTable = csvReader.ReadFile(filesPath + "runways.csv");
 
                             log.Info("Runways file read!");
@@ -246,7 +247,7 @@ namespace FSPAirnavDatabaseExporter
                         if (importTypes.Contains(ImportTypes.frequencies))
                         {
                             log.Info("start reading frequencies");
-                            csvReader = new CsvReader();
+                            csvReader = new CsvReader(delimiter.comma);
                             DataTable frequenciesTable = csvReader.ReadFile(filesPath + "airport-frequencies.csv");
 
                             log.Info("Frequencies file read!");
@@ -296,7 +297,6 @@ namespace FSPAirnavDatabaseExporter
                                 EFDatabase eFDatabase = new EFDatabase(filesPath);
                                 eFDatabase.Process(importTypes);
                             }
-
                         }
                     }
                 }

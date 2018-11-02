@@ -21,6 +21,7 @@ namespace FSPAirnavDatabaseExporter
             _urls.Add(urls.navaids);
             _urls.Add(urls.regions);
             _urls.Add(urls.runways);
+            _urls.Add(urls.cities5000);
 
             _localPath = Local_path;
 

@@ -37,43 +37,43 @@ namespace ConsoleReadXplaneData
 
         private void readAirports()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             airportsTable = csvReader.ReadFile(basePath + "airports.csv");
         }
 
         private void readRunways()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             runwaysTable = csvReader.ReadFile(basePath + "runways.csv");
         }
 
         private void readFrequencies()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             frequenciesTable = csvReader.ReadFile(basePath + "airport-frequencies.csv");
         }
 
         private void readRegions()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             regionsTable = csvReader.ReadFile(basePath + "regions.csv");
         }
 
         private void readCountries()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             countriesTable = csvReader.ReadFile(basePath + "countries.csv");
         }
 
         private void readFirs()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             firsTable = csvReader.ReadFile(basePath + "fir.csv");
         }
 
         private void readNavaids()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             navaidsTable = csvReader.ReadFile(basePath + "navaids.csv");
         }
 

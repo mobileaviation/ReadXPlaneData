@@ -2,12 +2,14 @@
 using FSPAirnavDatabaseExporter;
 using FSPAirnavDatabaseExporter.MBTiles;
 using FSPService;
+using FSPService.Compression;
 using FSPService.EF.Models;
 using FSPService.Models;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,47 +36,59 @@ namespace ConsoleReadXplaneData.EF
         private DataTable navaidsTable;
         private DataTable mbtilesTable;
         private DataTable fixesTable;
+        private DataTable citesTable;
 
         private void readAirports()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             airportsTable = csvReader.ReadFile(basePath + "airports.csv");
         }
 
         private void readRunways()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             runwaysTable = csvReader.ReadFile(basePath + "runways.csv");
         }
 
         private void readFrequencies()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             frequenciesTable = csvReader.ReadFile(basePath + "airport-frequencies.csv");
         }
 
         private void readRegions()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             regionsTable = csvReader.ReadFile(basePath + "regions.csv");
         }
 
         private void readCountries()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             countriesTable = csvReader.ReadFile(basePath + "countries.csv");
         }
 
         private void readFirs()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             firsTable = csvReader.ReadFile(basePath + "fir.csv");
         }
 
         private void readNavaids()
         {
-            CsvReader csvReader = new CsvReader();
+            CsvReader csvReader = new CsvReader(delimiter.comma);
             navaidsTable = csvReader.ReadFile(basePath + "navaids.csv");
+        }
+
+        private void readCities()
+        {
+            CsvReader csvReader = new CsvReader(delimiter.tab);
+            csvReader.prepColumns("geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2," +
+                "admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date");
+            if (File.Exists(basePath + "cities5000.txt")) File.Delete(basePath + "cities5000.txt");
+            List<String> files = Unzip.unzipFile(basePath + "cities5000.zip");
+            if (files.Contains(basePath + "cities5000.txt"))
+                citesTable = csvReader.ReadFile(basePath + "cities5000.txt");
         }
 
         private void readMBTiles()
@@ -128,13 +142,47 @@ namespace ConsoleReadXplaneData.EF
             {
                 readMBTiles();
             }
+            if (importTypes.Contains(ImportTypes.cities5000))
+            {
+                readCities();
+            }
         }
+
+        private void clearDatabase(AirNavDB airportsDb)
+        {
+            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
+            
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Runways");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Frequencies");
+            objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airports");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Cities");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Countries");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Firs");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Fixes");
+            
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Navaids");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Regions");
+            
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Tiles");
+        }
+
+        private void clearAirspacesTables(AirNavDB airportsDb)
+        {
+            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActiveDays");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActivePeriods");
+            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ATCStations");
+            objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airspaces");
+        }
+        
 
         public void Process(List<ImportTypes> importTypes)
         {
             readCsvFiles(importTypes);
             using (AirNavDB airportsDb = new AirNavDB())
             {
+                clearDatabase(airportsDb);
+
                 airportsDb.Configuration.AutoDetectChangesEnabled = false;
                 //airportsDb.Configuration.ValidateOnSaveEnabled = false;
                 if (importTypes.Contains(ImportTypes.airports))
@@ -182,11 +230,22 @@ namespace ConsoleReadXplaneData.EF
                     InsertTiles(airportsDb);
                     airportsDb.SaveChanges();
                 }
+                if (importTypes.Contains(ImportTypes.cities5000))
+                {
+                    InsertCities(airportsDb);
+                    airportsDb.SaveChanges();
+                }
+
             }
         }
 
         public void ProcessAirspaces(List<EFLink> links)
         {
+            using (AirNavDB airportsDb = new AirNavDB())
+            {
+                clearAirspacesTables(airportsDb);
+            }
+
             foreach (EFLink link in links)
             {
                 Airspaces airspaces = new Airspaces();
@@ -197,6 +256,7 @@ namespace ConsoleReadXplaneData.EF
                     InsertAirspaces(airportsDb, airspaces);
                 }
             }
+            
         }
 
         public void InsertAirports(AirNavDB db)
@@ -432,6 +492,33 @@ namespace ConsoleReadXplaneData.EF
                 //}
 
                 progress = ((float)index++ / (float)mbtilesTable.Rows.Count) * 100;
+
+                log.Info("Progress: {0}", progress);
+
+            }
+            db.SaveChanges();
+        }
+
+        public void InsertCities(AirNavDB db)
+        {
+            float progress = 0;
+            int index = 0;
+
+            foreach (DataRow row in citesTable.Rows)
+            {
+                EFCity city = CityFactory.GetCityFromDatatable(row);
+                //var q = from ap in db.tiles
+                //        where ap.name == tile.name
+                //        select ap;
+                //var check_tile = q.FirstOrDefault<EFTile>();
+
+                //if (check_tile == null)
+                //{
+                db.cities.Add(city);
+                log.Info("Add City: {0} to database", city.name);
+                //}
+
+                progress = ((float)index++ / (float)citesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 

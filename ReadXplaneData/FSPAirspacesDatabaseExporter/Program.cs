@@ -21,7 +21,7 @@ namespace FSPAirspacesDatabaseExporter
             if (!test)
             {
                 log.Info("Start importing Airspaces");
-                String basepath = @"C:\AirnavData\Airspaces\";
+                String basepath = Properties.Settings.Default.DownloadPath;
 
                 EFDatabase database = new EFDatabase(basepath);
 

@@ -40,6 +40,7 @@ namespace ConsoleReadXplaneData.EF
         public virtual DbSet<EFActiveDay> activeDays { get; set; }
         public virtual DbSet<EFATCStation> atcStations { get; set; }
         public virtual DbSet<EFLink> links { get; set; }
+        public virtual DbSet<EFCity> cities { get; set; }
 
     }
 }

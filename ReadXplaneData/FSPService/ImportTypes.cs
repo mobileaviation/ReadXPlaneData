@@ -17,6 +17,7 @@ namespace FSPAirnavDatabaseExporter
         runways,
         firs,
         mbtiles,
+        cities5000,
         test
     }
 }

@@ -70,6 +70,15 @@ namespace ConsoleReadXplaneData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://download.geonames.org/export/dump/cities5000.zip.
+        /// </summary>
+        internal static string cities5000 {
+            get {
+                return ResourceManager.GetString("cities5000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://ourairports.com/data/countries.csv.
         /// </summary>
         internal static string countries {
