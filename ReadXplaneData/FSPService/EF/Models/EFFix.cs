@@ -19,6 +19,7 @@ namespace ConsoleReadXplaneData.EF.Models
         public Double latitude_deg { get; set; }
         [Index]
         public Double longitude_deg { get; set; }
+        public String continent { get; set; }
     }
 
     public static class FixFactory

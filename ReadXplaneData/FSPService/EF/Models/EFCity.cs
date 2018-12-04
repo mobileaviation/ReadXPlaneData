@@ -35,6 +35,7 @@ namespace FSPService.EF.Models
         [StringLength(10)]
         [Index]
         public String country_code { get; set; }
+        public String continent { get; set; }
         public String cc2 { get; set; }
         public String admin1_code { get; set; }
         public String admin2_code { get; set; }

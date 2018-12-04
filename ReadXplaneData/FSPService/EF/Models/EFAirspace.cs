@@ -28,6 +28,7 @@ namespace FSPService.EF.Models
         public String category { get; set; }
         public long airspace_id { get; set; }
         public String country { get; set; }
+        public String continent { get; set; }
         public long altLimit_top { get; set; }
         public String altLimit_top_unit { get; set; }
         public String altLimit_top_ref { get; set; }

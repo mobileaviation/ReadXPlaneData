@@ -26,6 +26,7 @@ namespace ConsoleReadXplaneData.EF.Models
         public Double longitude_deg { get; set; }
         public Int32 elevation_ft { get; set; }
         public String iso_country { get; set; }
+        public String continent { get; set; }
         public Double dme_frequency_khz { get; set; }
         public Double dme_channel { get; set; }
         public Double dme_latitude_deg { get; set; }
