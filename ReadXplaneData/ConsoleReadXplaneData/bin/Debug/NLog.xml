@@ -9455,13 +9455,14 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:NLog.Internal.SingleItemOptimizedHashSet`1.SingleItemScopedInsert.#ctor(`0,NLog.Internal.SingleItemOptimizedHashSet{`0}@,System.Boolean)">
+        <member name="M:NLog.Internal.SingleItemOptimizedHashSet`1.SingleItemScopedInsert.#ctor(`0,NLog.Internal.SingleItemOptimizedHashSet{`0}@,System.Boolean,System.Collections.Generic.IEqualityComparer{`0})">
             <summary>
             Insert single item on scope start, and remove on scope exit
             </summary>
             <param name="singleItem">Item to insert in scope</param>
             <param name="existing">Existing hashset to update</param>
             <param name="forceHashSet">Force allocation of real hashset-container</param>
+            <param name="comparer">HashSet EqualityComparer</param>
         </member>
         <member name="M:NLog.Internal.SingleItemOptimizedHashSet`1.Add(`0)">
             <summary>

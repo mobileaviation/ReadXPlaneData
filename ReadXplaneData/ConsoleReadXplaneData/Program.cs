@@ -25,6 +25,7 @@ namespace FSPAirnavDatabaseExporter
 
         static void Main(string[] args)
         {
+
             databaseFilename = String.Format(ConsoleReadXplaneData.Properties.Settings.Default.Database + "_V{0:0000}{1:00}{2:00}.db",
                 DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 

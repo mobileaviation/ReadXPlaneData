@@ -162,8 +162,13 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                              endValidity = Convert.ToDateTime(v.Attribute("endValidity").Value)
                          };
             MbTile cycleMax = null;
-            if (cycles.Count()>0)
-                cycleMax = cycles.First(x => x.Version == cycles.Max(xx => xx.Version));
+            if (cycles.Count() > 0)
+            {
+                //var cyclescur = cycles.Select(c => c.startValidity<DateTime.Now);
+                var cyclesCur = from cc in cycles where cc.startValidity <= DateTime.Now select cc;
+
+                cycleMax = cyclesCur.First(x => (x.Version == cyclesCur.Max(xx => xx.Version)) && (x.startValidity <= DateTime.Now));
+            }
             else
             {
                 cycleMax = new MbTile();
