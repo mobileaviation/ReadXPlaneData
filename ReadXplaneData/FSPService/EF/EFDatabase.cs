@@ -4,6 +4,7 @@ using FSPAirnavDatabaseExporter.MBTiles;
 using FSPService;
 using FSPService.Compression;
 using FSPService.EF.Models;
+using FSPService.Enums;
 using FSPService.Models;
 using NLog;
 using System;
@@ -250,7 +251,9 @@ namespace ConsoleReadXplaneData.EF
             foreach (EFLink link in links)
             {
                 Airspaces airspaces = new Airspaces();
-                airspaces.processAirspaceFile(link.local_filename, link.country);
+                AirspaceFileType fileType = (link.openaip_enabled)? AirspaceFileType.openaip : AirspaceFileType.openair;
+
+                airspaces.processAirspaceFile(link.local_filename, link.country, fileType);
 
                 using (AirNavDB airportsDb = new AirNavDB())
                 {

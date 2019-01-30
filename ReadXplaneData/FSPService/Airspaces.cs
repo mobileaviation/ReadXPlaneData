@@ -11,6 +11,8 @@ using NLog;
 using GeoAPI.Geometries;
 using System.IO;
 using System.Globalization;
+using System.Xml.Linq;
+using NetTopologySuite.IO;
 
 namespace FSPService
 {
@@ -21,10 +23,22 @@ namespace FSPService
             log = LogManager.GetCurrentClassLogger();
         }
 
-        public void processAirspaceFile(String filename, String country)
+        public void processAirspaceFile(String filename, String country, AirspaceFileType type)
         {
             String filecontent = File.ReadAllText(filename);
-            readOpenAirText(filecontent, country);
+            switch (type)
+            {
+                case AirspaceFileType.openair:
+                {
+                    readOpenAirText(filecontent, country);
+                    break;
+                }
+                case AirspaceFileType.openaip:
+                {
+                    readOpenAipXml(filecontent, country);
+                    break;
+                }
+            }
         }
 
         private Logger log;
@@ -257,6 +271,58 @@ namespace FSPService
                 log.Error(e, "Airspaces Error");
                 int i = 0;
             }
+        }
+
+        private void readOpenAipXml(String xml, String country)
+        {
+
+            XDocument aipFile = XDocument.Parse(xml);
+
+
+            var asp = from a in aipFile.Root.Elements("AIRSPACES").Elements("ASP") select a;
+
+            foreach (XElement e in asp)
+            {
+                
+                Airspace ai = new Airspace();
+                ai.country = country;
+                String c = e.Attribute("CATEGORY").Value;
+                ai.category = (Enum.IsDefined(typeof(AirspaceCategory), c)) ?
+                                    (AirspaceCategory)Enum.Parse(typeof(AirspaceCategory), c) : AirspaceCategory.UKN;
+                ai.version = e.Element("VERSION").Value.ToString();
+                ai.id = Convert.ToInt64(e.Element("ID").Value);
+                ai.name = e.Element("NAME").Value.ToString();
+                String pol = e.Element("GEOMETRY").Value.ToString();
+
+                String[] pols = pol.Split(',');
+                if (!pols[0].Trim().Equals(pols[pols.Length - 1])) pol = pol + ", " + pols[0];
+                String p = "POLYGON ((" + pol + "))";
+
+                WKTReader wKTReader = new WKTReader();
+                ai.geometry = wKTReader.Read(p);
+
+                ai.altLimit_bottom = Convert.ToInt64(e.Element("ALTLIMIT_BOTTOM").Element("ALT").Value);
+                ai.altLimit_top = Convert.ToInt64(e.Element("ALTLIMIT_TOP").Element("ALT").Value);
+
+                c = e.Element("ALTLIMIT_TOP").Attribute("REFERENCE").Value;
+                ai.altLimit_top_ref = (Enum.IsDefined(typeof(AltitudeReference), c)) ?
+                                    (AltitudeReference)Enum.Parse(typeof(AltitudeReference), c) : AltitudeReference.MSL;
+                c = e.Element("ALTLIMIT_BOTTOM").Attribute("REFERENCE").Value;
+                ai.altLimit_bottom_ref = (Enum.IsDefined(typeof(AltitudeReference), c)) ?
+                                    (AltitudeReference)Enum.Parse(typeof(AltitudeReference), c) : AltitudeReference.MSL;
+
+                c = e.Element("ALTLIMIT_TOP").Element("ALT").Attribute("UNIT").Value;
+                ai.altLimit_top_unit = (Enum.IsDefined(typeof(AltitudeUnit), c)) ?
+                                    (AltitudeUnit)Enum.Parse(typeof(AltitudeUnit), c) : AltitudeUnit.F;
+                c = e.Element("ALTLIMIT_BOTTOM").Element("ALT").Attribute("UNIT").Value;
+                ai.altLimit_bottom_unit = (Enum.IsDefined(typeof(AltitudeUnit), c)) ?
+                                    (AltitudeUnit)Enum.Parse(typeof(AltitudeUnit), c) : AltitudeUnit.F;
+
+
+                this.Add(ai);
+                log.Info("Airspace: " + ai.name + " added Index: " + (this.Count() - 1).ToString() + " Country: " + ai.country);
+            }
+
         }
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="EF\Models\EFRunway.cs" />
     <Compile Include="EF\Models\EFTile.cs" />
     <Compile Include="Enums\AirspaceCategory.cs" />
+    <Compile Include="Enums\AirspaceFileType.cs" />
     <Compile Include="Enums\AltitudeReference.cs" />
     <Compile Include="Enums\AltitudeUnit.cs" />
     <Compile Include="ImportTypes.cs" />

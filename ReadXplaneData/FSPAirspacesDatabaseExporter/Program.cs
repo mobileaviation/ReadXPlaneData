@@ -8,6 +8,7 @@ using NLog;
 using ConsoleReadXplaneData.EF;
 using FSPService.Classes;
 using System.Globalization;
+using FSPService.Enums;
 
 namespace FSPAirspacesDatabaseExporter
 {
@@ -31,10 +32,9 @@ namespace FSPAirspacesDatabaseExporter
             }
             else
             {
-                String t = "DC 15";
-                String tt = Helpers.findRegex("([0-9.]+\\w)|([0-9])", t);
-                Double ttt = double.Parse(tt, CultureInfo.InvariantCulture);
-                int i = 0;
+                Airspaces airspaces = new Airspaces();
+                airspaces.processAirspaceFile(@"C:\Users\rob.verhoef\Downloads\openaip_airspace_netherlands_nl.aip", "Austria", AirspaceFileType.openaip);
+                int I = 0;
             }
 
             Console.ReadKey();
