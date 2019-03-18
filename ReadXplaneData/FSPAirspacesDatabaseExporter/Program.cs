@@ -9,6 +9,7 @@ using ConsoleReadXplaneData.EF;
 using FSPService.Classes;
 using System.Globalization;
 using FSPService.Enums;
+using ConsoleReadXplaneData;
 
 namespace FSPAirspacesDatabaseExporter
 {
@@ -26,15 +27,16 @@ namespace FSPAirspacesDatabaseExporter
 
                 EFDatabase database = new EFDatabase(basepath);
 
-                Downloader downloader = new Downloader("");
+                //Downloader downloader = new Downloader("");
+                Downloader downloader = new Downloader("NL");
                 if (downloader.DownloadXSourLinks(basepath))
-                    database.ProcessAirspaces(downloader.Links);
+                    //database.ProcessAirspaces(downloader.Links, ExportType.MsSql);
+                    database.ProcessAirspaces(downloader.Links, ExportType.GeoJson);
             }
             else
             {
                 Airspaces airspaces = new Airspaces();
                 airspaces.processAirspaceFile(@"C:\Users\rob.verhoef\Downloads\openaip_airspace_netherlands_nl.aip", "Austria", AirspaceFileType.openaip);
-                int I = 0;
             }
 
             Console.ReadKey();

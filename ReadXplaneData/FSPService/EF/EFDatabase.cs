@@ -5,6 +5,7 @@ using FSPService;
 using FSPService.Compression;
 using FSPService.EF.Models;
 using FSPService.Enums;
+using FSPService.Exporters;
 using FSPService.Models;
 using NLog;
 using System;
@@ -23,164 +24,63 @@ namespace ConsoleReadXplaneData.EF
         {
             this.basePath = basepath;
             log = LogManager.GetCurrentClassLogger();
+            csvDatabases = new CsvDatabases(basepath);
         }
 
         private Logger log;
         private String basePath;
+        private CsvDatabases csvDatabases;
 
-        private DataTable airportsTable;
-        private DataTable runwaysTable;
-        private DataTable frequenciesTable;
-        private DataTable countriesTable;
-        private DataTable regionsTable;
-        private DataTable firsTable;
-        private DataTable navaidsTable;
-        private DataTable mbtilesTable;
-        private DataTable fixesTable;
-        private DataTable citesTable;
 
-        private void readAirports()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            airportsTable = csvReader.ReadFile(basePath + "airports.csv");
-        }
 
-        private void readRunways()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            runwaysTable = csvReader.ReadFile(basePath + "runways.csv");
-        }
 
-        private void readFrequencies()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            frequenciesTable = csvReader.ReadFile(basePath + "airport-frequencies.csv");
-        }
-
-        private void readRegions()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            regionsTable = csvReader.ReadFile(basePath + "regions.csv");
-        }
-
-        private void readCountries()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            countriesTable = csvReader.ReadFile(basePath + "countries.csv");
-        }
-
-        private void readFirs()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            firsTable = csvReader.ReadFile(basePath + "fir.csv");
-        }
-
-        private void readNavaids()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.comma);
-            navaidsTable = csvReader.ReadFile(basePath + "navaids.csv");
-        }
-
-        private void readCities()
-        {
-            CsvReader csvReader = new CsvReader(delimiter.tab);
-            csvReader.prepColumns("geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2," +
-                "admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date");
-            if (File.Exists(basePath + "cities5000.txt")) File.Delete(basePath + "cities5000.txt");
-            List<String> files = Unzip.unzipFile(basePath + "cities5000.zip");
-            if (files.Contains(basePath + "cities5000.txt"))
-                citesTable = csvReader.ReadFile(basePath + "cities5000.txt");
-        }
-
-        private void readMBTiles()
-        {
-            ReadMBTiles reader = new ReadMBTiles();
-            mbtilesTable = reader.Process();
-            int test = 0;
-        }
-
-        private void readFixes()
-        {
-            XPlaneReader xplaneReader;
-            xplaneReader = new XPlaneReader();
-            fixesTable = xplaneReader.ReadFixFile(basePath + "earth_fix.dat");
-        }
-
-        private void readCsvFiles(List<ImportTypes> importTypes)
-        {
-            if (importTypes.Contains(ImportTypes.airports))
-            {
-                readAirports();
-            }
-            if (importTypes.Contains(ImportTypes.runways))
-            {
-                readRunways();
-            }
-            if (importTypes.Contains(ImportTypes.frequencies))
-            {
-                readFrequencies();
-            }
-            if (importTypes.Contains(ImportTypes.navaids))
-            {
-                readNavaids();
-            }
-            if (importTypes.Contains(ImportTypes.firs))
-            {
-                readFirs();
-            }
-            if (importTypes.Contains(ImportTypes.fixes))
-            {
-                readFixes();
-            }
-            if (importTypes.Contains(ImportTypes.countries))
-            {
-                readCountries();
-            }
-            if (importTypes.Contains(ImportTypes.regions))
-            {
-                readRegions();
-            }
-            if (importTypes.Contains(ImportTypes.mbtiles))
-            {
-                readMBTiles();
-            }
-            if (importTypes.Contains(ImportTypes.cities5000))
-            {
-                readCities();
-            }
-        }
 
         private void clearDatabase(AirNavDB airportsDb)
         {
-            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
-            
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Runways");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Frequencies");
-            objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airports");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Cities");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Countries");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Firs");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Fixes");
-            
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Navaids");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Regions");
-            
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Tiles");
+            try
+            {
+                var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
+
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Runways");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Frequencies");
+                objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airports");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Cities");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Countries");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Firs");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Fixes");
+
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Navaids");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Regions");
+
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_Tiles");
+            }
+            catch(Exception ee)
+            {
+                log.Error(ee, "Some problem with clearing and deleting data+tables");
+            }
         }
 
         private void clearAirspacesTables(AirNavDB airportsDb)
         {
-            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActiveDays");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActivePeriods");
-            objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ATCStations");
-            objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airspaces");
+            try
+            {
+                var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)airportsDb).ObjectContext;
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActiveDays");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ActivePeriods");
+                objCtx.ExecuteStoreCommand("TRUNCATE TABLE tbl_ATCStations");
+                objCtx.ExecuteStoreCommand("DELETE FROM tbl_Airspaces");
+            }
+            catch(Exception ee)
+            {
+                log.Error(ee, "Some problem with clearing and deleting data+tables");
+            }
         }
         
 
         public void Process(List<ImportTypes> importTypes)
         {
-            readCsvFiles(importTypes);
+            csvDatabases.ProcessCsvFiles(importTypes);
+
             using (AirNavDB airportsDb = new AirNavDB())
             {
                 clearDatabase(airportsDb);
@@ -241,7 +141,7 @@ namespace ConsoleReadXplaneData.EF
             }
         }
 
-        public void ProcessAirspaces(List<EFLink> links)
+        public void ProcessAirspaces(List<EFLink> links, ExportType exportTypes)
         {
             using (AirNavDB airportsDb = new AirNavDB())
             {
@@ -257,7 +157,8 @@ namespace ConsoleReadXplaneData.EF
 
                 using (AirNavDB airportsDb = new AirNavDB())
                 {
-                    InsertAirspaces(airportsDb, airspaces);
+                    if (exportTypes==ExportType.MsSql) InsertAirspaces(airportsDb, airspaces);
+                    if (exportTypes == ExportType.GeoJson) new GeoJsonExport(link, airspaces).exportToGeoJsonFile(@"C:\AirnavData\Airspaces\GeoJson");
                 }
             }
             
@@ -269,7 +170,7 @@ namespace ConsoleReadXplaneData.EF
             int index = 0;
 
             
-            foreach (DataRow row in airportsTable.Rows)
+            foreach (DataRow row in csvDatabases.airportsTable.Rows)
             {
                 EFAirport airport = AirportFactory.GetAirportFromDatatable(row);
                 //var q = from ap in db.airports
@@ -283,7 +184,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Airport: {0} to database", airport.name);
                 //}
 
-                progress = ((float)index++ / (float)airportsTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.airportsTable.Rows.Count) * 100;
                     
                 log.Info("Progress: {0}", progress);
 
@@ -296,7 +197,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in runwaysTable.Rows)
+            foreach (DataRow row in csvDatabases.runwaysTable.Rows)
             {
                 EFRunway runway = RunwayFactory.GetRunwayFromDatatable(row);
 
@@ -307,7 +208,7 @@ namespace ConsoleReadXplaneData.EF
                 //db.SaveChanges();
                 //}
 
-                progress = ((float)index++ / (float)runwaysTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.runwaysTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
                 if ((index % 100) == 0) db.SaveChanges();
@@ -319,7 +220,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in frequenciesTable.Rows)
+            foreach (DataRow row in csvDatabases.frequenciesTable.Rows)
             {
                 EFFrequency frequency = FrequencyFactory.GetFrequencyFromDatatable(row);
 
@@ -329,7 +230,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Frequency: {0} to database", frequency.airport_ident);
                 //}
 
-                progress = ((float)index++ / (float)frequenciesTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.frequenciesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
                 if ((index % 100) == 0) db.SaveChanges();
@@ -341,7 +242,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in navaidsTable.Rows)
+            foreach (DataRow row in csvDatabases.navaidsTable.Rows)
             {
                 EFNavaid navaid = NavaidFactory.GetNavaidFromDatatable(row);
                 //var q = from ap in db.navaids
@@ -355,7 +256,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Navaid: {0} to database", navaid.filename);
                 //}
 
-                progress = ((float)index++ / (float)navaidsTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.navaidsTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
                 if ((index % 100) == 0) db.SaveChanges();
@@ -368,7 +269,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in firsTable.Rows)
+            foreach (DataRow row in csvDatabases.firsTable.Rows)
             {
                 EFFir fir = FirFactory.GetFirFromDatatable(row);
                 //var q = from ap in db.firs
@@ -382,7 +283,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Fir: {0} to database", fir.name);
                 //}
 
-                progress = ((float)index++ / (float)firsTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.firsTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 
@@ -398,7 +299,7 @@ namespace ConsoleReadXplaneData.EF
 
             
 
-            foreach (DataRow row in fixesTable.Rows)
+            foreach (DataRow row in csvDatabases.fixesTable.Rows)
             {
                 EFFix fix = FixFactory.GetFixFromDatatable(row);
                 //var q = from ap in db.fixes
@@ -412,7 +313,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Fix: {0} to database", fix.ident);
                 //}
 
-                progress = ((float)index++ / (float)fixesTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.fixesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
                 if ((index % 100) == 0) db.SaveChanges();
@@ -428,7 +329,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in countriesTable.Rows)
+            foreach (DataRow row in csvDatabases.countriesTable.Rows)
             {
                 EFCountry country = CountryFactory.GetCountryFromDatatable(row);
                 //var q = from ap in db.countries
@@ -442,7 +343,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Country: {0} to database", country.name);
                 //}
 
-                progress = ((float)index++ / (float)countriesTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.countriesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 
@@ -455,7 +356,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in regionsTable.Rows)
+            foreach (DataRow row in csvDatabases.regionsTable.Rows)
             {
                 EFRegion region = RegionFactory.GetRegionFromDatatable(row);
                 //var q = from ap in db.regions
@@ -469,7 +370,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Region: {0} to database", region.name);
                 //}
 
-                progress = ((float)index++ / (float)regionsTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.regionsTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 
@@ -481,7 +382,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in mbtilesTable.Rows)
+            foreach (DataRow row in csvDatabases.mbtilesTable.Rows)
             {
                 EFTile tile = TileFactory.GetTileFromDatatable(row);
                 //var q = from ap in db.tiles
@@ -495,7 +396,7 @@ namespace ConsoleReadXplaneData.EF
                     log.Info("Add Tile: {0} to database", tile.name);
                 //}
 
-                progress = ((float)index++ / (float)mbtilesTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.mbtilesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 
@@ -508,7 +409,7 @@ namespace ConsoleReadXplaneData.EF
             float progress = 0;
             int index = 0;
 
-            foreach (DataRow row in citesTable.Rows)
+            foreach (DataRow row in csvDatabases.citesTable.Rows)
             {
                 EFCity city = CityFactory.GetCityFromDatatable(row);
                 //var q = from ap in db.tiles
@@ -522,7 +423,7 @@ namespace ConsoleReadXplaneData.EF
                 log.Info("Add City: {0} to database", city.name);
                 //}
 
-                progress = ((float)index++ / (float)citesTable.Rows.Count) * 100;
+                progress = ((float)index++ / (float)csvDatabases.citesTable.Rows.Count) * 100;
 
                 log.Info("Progress: {0}", progress);
 

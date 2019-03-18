@@ -10,6 +10,8 @@ using FSPAirnavDatabaseExporter.MBTiles;
 using ConsoleReadXplaneData.Firebase;
 using ConsoleReadXplaneData;
 using ConsoleReadXplaneData.EF;
+using FSPService;
+using FSPService.Mongo;
 
 namespace FSPAirnavDatabaseExporter
 {
@@ -36,7 +38,9 @@ namespace FSPAirnavDatabaseExporter
             Boolean test = false;
             Boolean download = true;
 
-            ExportType exportType = ExportType.MsSql;
+            //ExportType exportType = ExportType.MsSql;
+            ExportType exportType = ExportType.MongoDB;
+            //ExportType exportType = ExportType.FirebaseJson;
 
             if (download)
             {
@@ -53,245 +57,45 @@ namespace FSPAirnavDatabaseExporter
                     if (Enum.TryParse(t, out type)) importTypes.Add(type);
                 }
 
-                if (exportType == ExportType.FirebaseJson)
+                switch (exportType)
                 {
-                    AirportsExport airportsExport = new AirportsExport(filesPath);
-                    airportsExport.CreateAirportJson(filesPath + "airports.json");
-                }
-                else
-                {
-                    if (exportType == ExportType.SqLiteDatabase)
-                    {
-                        Database.CreateDatabase(databaseFilename);
-                        Database.CreateTables(databaseFilename, spatialEnabled);
-
-                        mapLocationList = new List<string>();
-
-                        log.Info("Tables created");
-                        log.Info("*********************************************");
-
-                        //// *************************************************************************************
-                        XPlaneReader xplaneReader;
-
-                        xplaneReader = new XPlaneReader();
-
-                        if (importTypes.Contains(ImportTypes.mbtiles))
+                    case ExportType.FirebaseJson:
                         {
-                            ReadMBTiles reader = new ReadMBTiles();
-                            DataTable mbTilesTable = reader.Process();
-                            Database.InsertTableIntoDatabase(mbTilesTable, "tbl_MbTiles", databaseFilename, mapLocationList, false);
+                            log.Info("Start export to firebase compatible json file");
+                            AirportsExport airportsExport = new AirportsExport(filesPath);
+                            airportsExport.CreateAirportJson(filesPath + "airports.json");
+                            break;
                         }
-
-                        // *************************************************************************************
-
-                        if (importTypes.Contains(ImportTypes.fixes))
+                    case ExportType.GeoJson:
                         {
-                            log.Info("start reading xplane-fix");
-                            DataTable fixTable = xplaneReader.ReadFixFile(@"data\" + "earth_fix.dat");
-
-                            log.Info("xplane-fix file read");
-                            xplaneReader = new XPlaneReader();
-
-                            log.Info("*********************************************");
-
-                            log.Info("Insert xplane-fix in database...");
-
-                            mapLocationList.Add("tbl_Fixes");
-                            Database.InsertFixTableIntoDatabase(fixTable, databaseFilename, spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Fixes", databaseFilename, "", spatialEnabled);
-                            log.Info("xplane-fix inserted in database!");
-                            log.Info("*********************************************");
+                            break;
                         }
-
-                        // *************************************************************************************
-
-                        CsvReader csvReader;
-                        // *************************************************************************************
-
-
-
-                        if (importTypes.Contains(ImportTypes.regions))
-                        {
-                            csvReader = new CsvReader(delimiter.comma);
-                            log.Info("start reading regions");
-                            DataTable regionsTable = csvReader.ReadFile(filesPath + "regions.csv");
-
-                            log.Info("Regions file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert regions in database...");
-
-                            mapLocationList.Add("tbl_Region");
-                            Database.InsertTableIntoDatabase(regionsTable, "tbl_Region", databaseFilename, mapLocationList, spatialEnabled);
-                            log.Info("Regions inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        // *************************************************************************************
-                        if (importTypes.Contains(ImportTypes.firs))
-                        {
-                            csvReader = new CsvReader(delimiter.comma);
-                            log.Info("start reading firs");
-                            DataTable regionsTable = csvReader.ReadFile(@"data\" + "fir.csv");
-
-                            log.Info("Regions file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert Firs in database...");
-
-                            Database.InsertTableIntoDatabase(regionsTable, "tbl_Firs", databaseFilename, mapLocationList, spatialEnabled);
-                            log.Info("Firs inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-
-                        // *************************************************************************************
-                        if (importTypes.Contains(ImportTypes.countries))
-                        {
-                            log.Info("start reading countries");
-                            csvReader = new CsvReader(delimiter.comma);
-                            DataTable countriesTable = csvReader.ReadFile(filesPath + "countries.csv");
-
-                            log.Info("Countries file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert countries in database...");
-
-                            Database.InsertTableIntoDatabase(countriesTable, "tbl_Country", databaseFilename, mapLocationList, spatialEnabled);
-                            log.Info("Countries inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        // *************************************************************************************
-                        if (importTypes.Contains(ImportTypes.airports))
-                        {
-                            log.Info("start reading airports");
-
-
-
-
-                            log.Info("airports file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert airports in database...");
-
-                            csvReader = new CsvReader(delimiter.comma);
-                            DataTable airportsTable = csvReader.ReadFile(filesPath + "airports.csv");
-                            //mapLocationList.Add("tbl_Airports");
-                            Database.InsertTableIntoDatabase(airportsTable, "tbl_Airports", databaseFilename, mapLocationList, spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Airports", databaseFilename, "", spatialEnabled);
-
-
-                            //if (useFirebase)
-                            //{
-                            //    //FirebaseDBClient.WriteData(airportsTable, ImportTypes.airports);
-                            //    //String filename = filesPath + "airports.json";
-                            //    //FirebaseDBClient.SaveAsJson(airportsTable, ImportTypes.airports, filename);
-                            //    AirportsExport airportsExport = new AirportsExport(filesPath);
-                            //    airportsExport.CreateAirportJson(filesPath + "airports.json");
-                            //}
-
-                            log.Info("airports inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        // *************************************************************************************
-
-                        if (importTypes.Contains(ImportTypes.navaids))
-                        {
-                            log.Info("start reading Navaids");
-                            csvReader = new CsvReader(delimiter.comma);
-                            DataTable navaidsTable = csvReader.ReadFile(filesPath + "navaids.csv");
-
-                            log.Info("Navaids file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert Navaids in database...");
-
-                            mapLocationList.Add("tbl_Navaids");
-                            Database.InsertTableIntoDatabase(navaidsTable, "tbl_Navaids", databaseFilename, mapLocationList, spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Navaids", databaseFilename, "", spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Navaids", databaseFilename, "dme_", spatialEnabled);
-                            log.Info("Navaids inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        // *************************************************************************************
-                        if (importTypes.Contains(ImportTypes.runways))
-                        {
-                            log.Info("start reading runways");
-                            csvReader = new CsvReader(delimiter.comma);
-                            DataTable runwaysTable = csvReader.ReadFile(filesPath + "runways.csv");
-
-                            log.Info("Runways file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert Runways in database...");
-
-                            Database.InsertTableIntoDatabase(runwaysTable, "tbl_Runways", databaseFilename, mapLocationList, spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Runways", databaseFilename, "le_", spatialEnabled);
-                            if (spatialEnabled) Database.AddgeomPoint("tbl_Runways", databaseFilename, "he_", spatialEnabled);
-                            log.Info("Runways inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        // ************************************************************************************
-
-                        if (importTypes.Contains(ImportTypes.frequencies))
-                        {
-                            log.Info("start reading frequencies");
-                            csvReader = new CsvReader(delimiter.comma);
-                            DataTable frequenciesTable = csvReader.ReadFile(filesPath + "airport-frequencies.csv");
-
-                            log.Info("Frequencies file read!");
-                            log.Info("*********************************************");
-
-                            log.Info("Insert Frequencies in database...");
-
-                            Database.InsertTableIntoDatabase(frequenciesTable, "tbl_AirportFrequencies", databaseFilename, mapLocationList, spatialEnabled);
-                            log.Info("Frequencies inserted in database!");
-                            log.Info("*********************************************");
-                        }
-
-                        if (importTypes.Contains(ImportTypes.test))
-                        {
-                            log.Info("start test insert");
-                            Database.testInsert("tbl_Airports", databaseFilename, spatialEnabled);
-                        }
-
-                        Database.CreateTableIndexen(databaseFilename, spatialEnabled);
-                        log.Info("Tables Indexen created");
-
-                        // ************************************************************************************
-
-                        log.Info("Insert Andriod in database...");
-                        Database.CreateAndriodTable(databaseFilename, spatialEnabled);
-                        log.Info("Andriod table inserted in database!");
-                        log.Info("*********************************************");
-
-                        log.Info("Insert tbl_Properties in database...");
-                        Database.CreatePropertiesTable(databaseFilename, spatialEnabled);
-                        log.Info("tbl_Properties table inserted in database!");
-                        log.Info("*********************************************");
-                    }
-                    else
-                    {
-                        if (exportType==ExportType.Json)
+                    case ExportType.Json:
                         {
                             log.Info("Start export to individual json files");
                             Console.ReadKey();
                             AirportsExport airportsExport = new AirportsExport(filesPath);
                             airportsExport.CreateJsonFiles();
+                            break;
                         }
-                        else
+                    case ExportType.MsSql:
                         {
-                            if (exportType == ExportType.MsSql)
-                            {
-                                EFDatabase eFDatabase = new EFDatabase(filesPath);
-                                eFDatabase.Process(importTypes);
-                            }
+                            EFDatabase eFDatabase = new EFDatabase(filesPath);
+                            eFDatabase.Process(importTypes);
+                            break;
                         }
-                    }
+                    case ExportType.SqLiteDatabase:
+                        {
+                            SQLiteDatabase.StoreInSqliteDatabase(importTypes, databaseFilename, filesPath, spatialEnabled);
+                            break;
+                        }
+                    case ExportType.MongoDB:
+                        {
+                            MongoDatabase mongoDatabase = new MongoDatabase(filesPath);
+                            mongoDatabase.StartProcess(importTypes);
+                            break;
+                        }
+
                 }
             }
             else

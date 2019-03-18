@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleReadXplaneData
 {
-    enum ExportType
+    public enum ExportType
     {
         SqLiteDatabase,
         FirebaseJson,
         Json,
-        MsSql
+        MsSql,
+        GeoJson,
+        MongoDB
     }
 }

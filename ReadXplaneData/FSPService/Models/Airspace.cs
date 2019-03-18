@@ -1,5 +1,6 @@
 ﻿using FSPService.Enums;
 using GeoAPI.Geometries;
+using GeoJSON.Net.Geometry;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using System;
@@ -79,7 +80,37 @@ namespace FSPService.Models
                 }
             }
         }
+
+        public List<Position> GetPositions()
+        {
+            List<Position> positions = null;
+
+            if (geometry == null)
+            {
+                positions = new List<Position>();
+
+                if (coordinates.Count() == 0)
+                {
+                    return null;
+                }
+                if ((coordinates[0].X != coordinates[coordinates.Count() - 1].X) ||
+                        (coordinates[0].Y != coordinates[coordinates.Count() - 1].Y))
+                {
+                    coordinates.Add(coordinates[0]);
+                }
+                
+                foreach (Coordinate c in coordinates)
+                {
+                    positions.Add(new Position(c.Y, c.X));
+                }
+
+            }
+
+            return positions;
+        }
     }
+    
+
 
     public class ATCStation
     {

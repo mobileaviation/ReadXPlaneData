@@ -132,7 +132,6 @@
   <ItemGroup>
     <Compile Include="AirportsExport.cs" />
     <Compile Include="DataDownloader.cs" />
-    <Compile Include="ExportType.cs" />
     <Compile Include="Firebase\FirebaseClient.cs" />
     <Compile Include="MBTiles\MbTile.cs" />
     <Compile Include="MBTiles\MBTileType.cs" />

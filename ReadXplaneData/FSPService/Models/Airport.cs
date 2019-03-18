@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using FSPService.Classes;
+using MongoDB.Bson;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -70,6 +72,45 @@ namespace ConsoleReadXplaneData.Models
 
 
                 return a;
+            }
+            catch (Exception ee)
+            {
+                return null;
+            }
+        }
+
+        public static BsonDocument GetAirportBsonDocFromDatatable(DataRow airportData, int Index)
+        {
+            try
+            {
+                BsonDocument doc = new BsonDocument();
+
+                doc.Add("index", Index);
+                doc.Add("id", Xs.ToInt(airportData, "id", -1));
+                doc.Add("ident", airportData["ident"].ToString());
+                doc.Add("type", airportData["type"].ToString());
+                doc.Add("name", airportData["name"].ToString());
+                doc.Add("latitude_deg", Xs.ToDouble(airportData, "latitude_deg", 0));
+                doc.Add("longitude_deg", Xs.ToDouble(airportData, "longitude_deg", 0));
+                GeoJsonPoint p = new GeoJsonPoint(Xs.ToDouble(airportData, "latitude_deg", 0),
+                     Xs.ToDouble(airportData, "longitude_deg", 0));
+
+                doc.Add("location", p.getPointElement());
+                doc.Add("elevation_ft", Xs.ToDouble(airportData, "elevation_ft", 0));
+                doc.Add("continent", airportData["continent"].ToString());
+                doc.Add("iso_country", airportData["iso_country"].ToString());
+                doc.Add("iso_region", airportData["iso_region"].ToString());
+                doc.Add("municipality", airportData["municipality"].ToString());
+                doc.Add("scheduled_service", airportData["scheduled_service"].ToString());
+                doc.Add("gps_code", airportData["gps_code"].ToString());
+                doc.Add("iata_code", airportData["iata_code"].ToString());
+                doc.Add("local_code", airportData["local_code"].ToString());
+                doc.Add("home_link", airportData["home_link"].ToString());
+                doc.Add("wikipedia_link", airportData["wikipedia_link"].ToString());
+                doc.Add("keywords", airportData["keywords"].ToString());
+
+
+                return doc;
             }
             catch (Exception ee)
             {
