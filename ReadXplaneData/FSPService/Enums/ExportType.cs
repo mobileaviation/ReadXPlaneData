@@ -13,6 +13,7 @@ namespace ConsoleReadXplaneData
         Json,
         MsSql,
         GeoJson,
-        MongoDB
+        MongoDB,
+        MySql
     }
 }

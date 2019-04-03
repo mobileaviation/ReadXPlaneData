@@ -10,12 +10,12 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Frequency
     {
-        public Int32 id;
-        public Int32 airport_ref;
-        public String airport_ident;
-        public String type;
-        public String description;
-        public Double frequency_mhz;
+        public Int32 id { get; set; }
+        public Int32 airport_ref { get; set; }
+        public String airport_ident { get; set; }
+        public String type { get; set; }
+        public String description { get; set; }
+        public Double frequency_mhz { get; set; }
     }
 
     public static class FrequencyFactory

@@ -10,15 +10,15 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Region
     {
-        public Int32 index;
-        public Int32 id;
-        public String code;
-        public String local_code;
-        public String name;
-        public String continent;
-        public String iso_country;
-        public String wikipedia_link;
-        public String keywords;
+        public Int32 index { get; set; }
+        public Int32 id { get; set; }
+        public String code { get; set; }
+        public String local_code { get; set; }
+        public String name { get; set; }
+        public String continent { get; set; }
+        public String iso_country { get; set; }
+        public String wikipedia_link { get; set; }
+        public String keywords { get; set; }
     }
 
     public static class RegionFactory

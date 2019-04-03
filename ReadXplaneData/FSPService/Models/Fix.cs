@@ -10,10 +10,10 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Fix
     {
-        public Int32 index;
-        public String ident;
-        public Double latitude_deg;
-        public Double longitude_deg;
+        public Int32 index { get; set; }
+        public String ident { get; set; }
+        public Double latitude_deg { get; set; }
+        public Double longitude_deg { get; set; }
     }
 
     public static class FixFactory

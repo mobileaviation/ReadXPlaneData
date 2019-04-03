@@ -10,13 +10,13 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Country
     {
-        public Int32 index;
-        public Int32 id;
-        public String code;
-        public String name;
-        public String continent;
-        public String wikipedia_link;
-        public String keywords;
+        public Int32 index { get; set; }
+        public Int32 id { get; set; }
+        public String code { get; set; }
+        public String name { get; set; }
+        public String continent { get; set; }
+        public String wikipedia_link { get; set; }
+        public String keywords { get; set; }
     }
 
     public static class CountryFactory

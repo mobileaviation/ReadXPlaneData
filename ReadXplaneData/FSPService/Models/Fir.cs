@@ -10,12 +10,12 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Fir
     {
-        public Int32 index;
-        public Int32 id;
-        public String ident;
-        public String name;
-        public String position;
-        public String polygon;
+        public Int32 index { get; set; }
+        public Int32 id { get; set; }
+        public String ident { get; set; }
+        public String name { get; set; }
+        public String position { get; set; }
+        public String polygon { get; set; }
     }
 
     public static class FirFactory

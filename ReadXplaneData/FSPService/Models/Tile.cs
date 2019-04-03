@@ -10,15 +10,15 @@ namespace ConsoleReadXplaneData.Models
 {
     public class Tile
     {
-        public Int32 index;
-        public String name;
-        public String region;
-        public String type;
-        public String mbtileslink;
-        public String xmllink;
-        public String version;
-        public long startValidity;
-        public long endValidity;
+        public Int32 index { get; set; }
+        public String name { get; set; }
+        public String region { get; set; }
+        public String type { get; set; }
+        public String mbtileslink { get; set; }
+        public String xmllink { get; set; }
+        public String version { get; set; }
+        public long startValidity { get; set; }
+        public long endValidity { get; set; }
     }
 
     public static class TileFactory

@@ -3,10 +3,12 @@ using FSPAirnavDatabaseExporter;
 using FSPAirnavDatabaseExporter.MBTiles;
 using FSPService;
 using FSPService.Compression;
+using FSPService.EF;
 using FSPService.EF.Models;
 using FSPService.Enums;
 using FSPService.Exporters;
 using FSPService.Models;
+using MySql.Data.MySqlClient;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -75,70 +77,74 @@ namespace ConsoleReadXplaneData.EF
                 log.Error(ee, "Some problem with clearing and deleting data+tables");
             }
         }
-        
+
 
         public void Process(List<ImportTypes> importTypes)
         {
             csvDatabases.ProcessCsvFiles(importTypes);
-
             using (AirNavDB airportsDb = new AirNavDB())
             {
                 clearDatabase(airportsDb);
-
                 airportsDb.Configuration.AutoDetectChangesEnabled = false;
                 //airportsDb.Configuration.ValidateOnSaveEnabled = false;
-                if (importTypes.Contains(ImportTypes.airports))
-                {
-                    InsertAirports(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.runways))
-                {
-                    InsertRunways(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.frequencies))
-                {
-                    InsertFrequnecies(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.navaids))
-                {
-                    InsertNavaids(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.firs))
-                {
-                    InsertFirs(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.fixes))
-                {
-                    InsertFixes(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.countries))
-                {
-                    InsertCountries(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.regions))
-                { 
-                    InsertRegions(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.mbtiles))
-                {
-                    InsertTiles(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-                if (importTypes.Contains(ImportTypes.cities5000))
-                {
-                    InsertCities(airportsDb);
-                    airportsDb.SaveChanges();
-                }
-
+                processMSSQL(importTypes, airportsDb);
             }
+        }
+
+        private void processMSSQL(List<ImportTypes> importTypes, AirNavDB airportsDb)
+        {
+            if (importTypes.Contains(ImportTypes.airports))
+            {
+                InsertAirports(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.runways))
+            {
+                InsertRunways(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.frequencies))
+            {
+                InsertFrequnecies(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.navaids))
+            {
+                InsertNavaids(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.firs))
+            {
+                InsertFirs(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.fixes))
+            {
+                InsertFixes(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.countries))
+            {
+                InsertCountries(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.regions))
+            { 
+                InsertRegions(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.mbtiles))
+            {
+                InsertTiles(airportsDb);
+                airportsDb.SaveChanges();
+            }
+            if (importTypes.Contains(ImportTypes.cities5000))
+            {
+                InsertCities(airportsDb);
+                airportsDb.SaveChanges();
+            }
+
+
         }
 
         public void ProcessAirspaces(List<EFLink> links, ExportType exportTypes)

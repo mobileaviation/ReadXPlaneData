@@ -18,25 +18,25 @@ namespace ConsoleReadXplaneData.Models
             frequencies = new List<Frequency>();
         }
 
-        public Int32 index;
-        public Int32 id;
-        public String ident;
-        public String type;
-        public String name;
-        public Double latitude_deg;
-        public Double longitude_deg;
-        public Double elevation_ft;
-        public String continent;
-        public String iso_country;
-        public String iso_region;
-        public String municipality;
-        public String scheduled_service;
-        public String gps_code;
-        public String iata_code;
-        public String local_code;
-        public String home_link;
-        public String wikipedia_link;
-        public String keywords;
+        public Int32 index { get; set; }
+        public Int32 id { get; set; }
+        public String ident { get; set; }
+        public String type { get; set; }
+        public String name { get; set; }
+        public Double latitude_deg { get; set; }
+        public Double longitude_deg { get; set; }
+        public Double elevation_ft { get; set; }
+        public String continent { get; set; }
+        public String iso_country { get; set; }
+        public String iso_region { get; set; }
+        public String municipality { get; set; }
+        public String scheduled_service { get; set; }
+        public String gps_code { get; set; }
+        public String iata_code { get; set; }
+        public String local_code { get; set; }
+        public String home_link { get; set; }
+        public String wikipedia_link { get; set; }
+        public String keywords { get; set; }
 
         public List<Runway> runways;
         public List<Frequency> frequencies;

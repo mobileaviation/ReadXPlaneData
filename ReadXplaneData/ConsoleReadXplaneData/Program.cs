@@ -12,6 +12,8 @@ using ConsoleReadXplaneData;
 using ConsoleReadXplaneData.EF;
 using FSPService;
 using FSPService.Mongo;
+using MySql.Data.MySqlClient;
+using FSPService.MySql;
 
 namespace FSPAirnavDatabaseExporter
 {
@@ -39,8 +41,9 @@ namespace FSPAirnavDatabaseExporter
             Boolean download = true;
 
             //ExportType exportType = ExportType.MsSql;
-            ExportType exportType = ExportType.MongoDB;
+            //ExportType exportType = ExportType.MongoDB;
             //ExportType exportType = ExportType.FirebaseJson;
+            ExportType exportType = ExportType.MySql;
 
             if (download)
             {
@@ -81,7 +84,14 @@ namespace FSPAirnavDatabaseExporter
                     case ExportType.MsSql:
                         {
                             EFDatabase eFDatabase = new EFDatabase(filesPath);
+                            
                             eFDatabase.Process(importTypes);
+                            break;
+                        }
+                    case ExportType.MySql:
+                        {
+                            MyDatabase myDatabase = new MyDatabase(filesPath);
+                            myDatabase.Process(importTypes);
                             break;
                         }
                     case ExportType.SqLiteDatabase:
