@@ -79,12 +79,12 @@ namespace ConsoleReadXplaneData.EF
         }
 
 
-        public void Process(List<ImportTypes> importTypes)
+        public void Process(List<ImportTypes> importTypes, bool _clearDatabase)
         {
             csvDatabases.ProcessCsvFiles(importTypes);
             using (AirNavDB airportsDb = new AirNavDB())
             {
-                clearDatabase(airportsDb);
+                if (_clearDatabase) clearDatabase(airportsDb);
                 airportsDb.Configuration.AutoDetectChangesEnabled = false;
                 //airportsDb.Configuration.ValidateOnSaveEnabled = false;
                 processMSSQL(importTypes, airportsDb);

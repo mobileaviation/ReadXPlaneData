@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FSPService.Classes;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -102,25 +103,23 @@ namespace FSPAirnavDatabaseExporter.MBTiles
                 String _region = reader["region"].ToString();
                 int _version = Convert.ToInt32(reader["version"].ToString());
                 String _name = reader["name"].ToString();
-                //DateTime _startValidity = Convert.ToDateTime(reader["startValidity"].ToString());
-                //DateTime _endValidity = Convert.ToDateTime(reader["endValidity"].ToString());
+                String _startValidityVal = reader["startValidity"].ToString();
+                DateTime _startValidity = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(_startValidityVal)).UtcDateTime;
+                String _endValidityVal = reader["endValidity"].ToString();
+                DateTime _endValidity = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(_endValidityVal)).UtcDateTime;
 
+
+                Airac a = new Airac();
+                _version = Convert.ToInt32(a.getCurrentAirac());
                 String link = createLink(_region, _version, xmlLink);
 
                 log.Info("Reading: {0} with XML link {1}.", _name, link);
                 String xml = downloadXml(link);
                 log.Info("XML Downloaded");
+
                 MbTile tile = parseOfmXml(xml, _version);
-                if (tile.Version>_version)
-                {
-                    log.Info("Found newer version {0} than in database {1}", _version, tile.Version);
-                    _version = tile.Version;
-                    link = createLink(_region, _version, xmlLink);
-                    log.Info("Reading new: {0} with XML link {1}.", _name, link);
-                    xml = downloadXml(link);
-                    tile = parseOfmXml(xml, _version);
-                    updateVersion(id, tile.Version, tile.startValidity, tile.endValidity);
-                }
+
+                updateVersion(id, tile.Version, tile.startValidity, tile.endValidity);
 
                 tile.Region = _region;
                 tile.Name = _name;

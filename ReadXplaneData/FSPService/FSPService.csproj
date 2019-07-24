@@ -199,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airspaces.cs" />
+    <Compile Include="Classes\Airac.cs" />
     <Compile Include="Classes\GeoJsonPoint.cs" />
     <Compile Include="Classes\GeoJsonType.cs" />
     <Compile Include="Classes\Helpers.cs" />

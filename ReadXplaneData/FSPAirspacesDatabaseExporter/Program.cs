@@ -27,11 +27,11 @@ namespace FSPAirspacesDatabaseExporter
 
                 EFDatabase database = new EFDatabase(basepath);
 
-                //Downloader downloader = new Downloader("");
-                Downloader downloader = new Downloader("NL");
+                Downloader downloader = new Downloader("");
+                //Downloader downloader = new Downloader("NL");
                 if (downloader.DownloadXSourLinks(basepath))
-                    //database.ProcessAirspaces(downloader.Links, ExportType.MsSql);
-                    database.ProcessAirspaces(downloader.Links, ExportType.GeoJson);
+                    database.ProcessAirspaces(downloader.Links, ExportType.MsSql);
+                    //database.ProcessAirspaces(downloader.Links, ExportType.GeoJson);
             }
             else
             {

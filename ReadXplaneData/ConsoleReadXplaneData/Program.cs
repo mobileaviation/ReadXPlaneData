@@ -39,11 +39,13 @@ namespace FSPAirnavDatabaseExporter
 
             Boolean test = false;
             Boolean download = true;
+            Boolean loadImportTypes = true;
+            Boolean clearDatabase = true;
 
-            //ExportType exportType = ExportType.MsSql;
+            ExportType exportType = ExportType.MsSql;
             //ExportType exportType = ExportType.MongoDB;
             //ExportType exportType = ExportType.FirebaseJson;
-            ExportType exportType = ExportType.MySql;
+            //ExportType exportType = ExportType.MySql;
 
             if (download)
             {
@@ -54,10 +56,16 @@ namespace FSPAirnavDatabaseExporter
             if (!test)
             {
                 importTypes = new List<ImportTypes>();
-                foreach (String t in ConsoleReadXplaneData.Properties.Settings.Default.InportTypes)
+                if (loadImportTypes)
                 {
-                    ImportTypes type;
-                    if (Enum.TryParse(t, out type)) importTypes.Add(type);
+                    foreach (String t in ConsoleReadXplaneData.Properties.Settings.Default.InportTypes)
+                    {
+                        ImportTypes type;
+                        if (Enum.TryParse(t, out type)) importTypes.Add(type);
+                    }
+                } else
+                {
+                    importTypes.Add(ImportTypes.mbtiles);
                 }
 
                 switch (exportType)
@@ -85,7 +93,7 @@ namespace FSPAirnavDatabaseExporter
                         {
                             EFDatabase eFDatabase = new EFDatabase(filesPath);
                             
-                            eFDatabase.Process(importTypes);
+                            eFDatabase.Process(importTypes, clearDatabase);
                             break;
                         }
                     case ExportType.MySql:
