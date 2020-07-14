@@ -13,13 +13,13 @@ namespace FSPService.Exporters
 {
     public class GeoJsonExport
     {
-        public GeoJsonExport(EFLink link, Airspaces airspaces)
+        public GeoJsonExport(Link link, Airspaces airspaces)
         {
             this.airspaces = airspaces;
             this.link = link;
         }
 
-        private EFLink link;
+        private Link link;
         private Airspaces airspaces;
 
 

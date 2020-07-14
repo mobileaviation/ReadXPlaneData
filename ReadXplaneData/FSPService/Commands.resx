@@ -117,6 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeleteActiveDays" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_activedays`;</value>
+  </data>
+  <data name="DeleteActivePeriods" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_activeperiods`;</value>
+  </data>
+  <data name="DeleteAirports" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_airports`;</value>
+  </data>
+  <data name="DeleteAirspaces" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_airspaces`;</value>
+  </data>
+  <data name="DeleteAtcStations" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_atcstations`;</value>
+  </data>
+  <data name="DeleteCities" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_cities`;</value>
+  </data>
+  <data name="DeleteCountries" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_countries`;</value>
+  </data>
+  <data name="DeleteFirs" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_firs`;</value>
+  </data>
+  <data name="DeleteFixes" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_fixes`;</value>
+  </data>
+  <data name="DeleteFrequencies" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_frequencies`;</value>
+  </data>
+  <data name="DeleteNavaids" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_navaids`;</value>
+  </data>
+  <data name="DeleteRegions" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_regions`;</value>
+  </data>
+  <data name="DeleteRunways" xml:space="preserve">
+    <value>DELETE FROM `airnavdb`.`tbl_runways`;</value>
+  </data>
   <data name="InsertAirports" xml:space="preserve">
     <value>INSERT INTO `airnavdb`.`tbl_airports`
 (`id`,
@@ -402,5 +441,8 @@ VALUES
 @version,
 @startValidity,
 @endValidity);</value>
+  </data>
+  <data name="SelectLinks" xml:space="preserve">
+    <value>SELECT * FROM `airnavdb`.`tbl_links` WHERE enabled=1;</value>
   </data>
 </root>

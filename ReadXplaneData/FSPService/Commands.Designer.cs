@@ -19,7 +19,7 @@ namespace FSPService {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Commands {
@@ -57,6 +57,123 @@ namespace FSPService {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_activedays`;.
+        /// </summary>
+        internal static string DeleteActiveDays {
+            get {
+                return ResourceManager.GetString("DeleteActiveDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_activeperiods`;.
+        /// </summary>
+        internal static string DeleteActivePeriods {
+            get {
+                return ResourceManager.GetString("DeleteActivePeriods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_airports`;.
+        /// </summary>
+        internal static string DeleteAirports {
+            get {
+                return ResourceManager.GetString("DeleteAirports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_airspaces`;.
+        /// </summary>
+        internal static string DeleteAirspaces {
+            get {
+                return ResourceManager.GetString("DeleteAirspaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_atcstations`;.
+        /// </summary>
+        internal static string DeleteAtcStations {
+            get {
+                return ResourceManager.GetString("DeleteAtcStations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_cities`;.
+        /// </summary>
+        internal static string DeleteCities {
+            get {
+                return ResourceManager.GetString("DeleteCities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_countries`;.
+        /// </summary>
+        internal static string DeleteCountries {
+            get {
+                return ResourceManager.GetString("DeleteCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_firs`;.
+        /// </summary>
+        internal static string DeleteFirs {
+            get {
+                return ResourceManager.GetString("DeleteFirs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_fixes`;.
+        /// </summary>
+        internal static string DeleteFixes {
+            get {
+                return ResourceManager.GetString("DeleteFixes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_frequencies`;.
+        /// </summary>
+        internal static string DeleteFrequencies {
+            get {
+                return ResourceManager.GetString("DeleteFrequencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_navaids`;.
+        /// </summary>
+        internal static string DeleteNavaids {
+            get {
+                return ResourceManager.GetString("DeleteNavaids", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_regions`;.
+        /// </summary>
+        internal static string DeleteRegions {
+            get {
+                return ResourceManager.GetString("DeleteRegions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM `airnavdb`.`tbl_runways`;.
+        /// </summary>
+        internal static string DeleteRunways {
+            get {
+                return ResourceManager.GetString("DeleteRunways", resourceCulture);
             }
         }
         
@@ -369,6 +486,15 @@ namespace FSPService {
         internal static string InsertTiles {
             get {
                 return ResourceManager.GetString("InsertTiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM `airnavdb`.`tbl_links` WHERE enabled=1;.
+        /// </summary>
+        internal static string SelectLinks {
+            get {
+                return ResourceManager.GetString("SelectLinks", resourceCulture);
             }
         }
     }

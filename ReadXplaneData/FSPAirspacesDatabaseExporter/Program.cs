@@ -20,18 +20,32 @@ namespace FSPAirspacesDatabaseExporter
             Logger log = LogManager.GetCurrentClassLogger();
             Boolean test = false;
 
+            ExportType exportType = ExportType.MsSql;
+            //ExportType exportType = ExportType.MongoDB;
+            //ExportType exportType = ExportType.FirebaseJson;
+            //ExportType exportType = ExportType.MySql;
+
             if (!test)
             {
                 log.Info("Start importing Airspaces");
                 String basepath = Properties.Settings.Default.DownloadPath;
 
-                EFDatabase database = new EFDatabase(basepath);
 
                 Downloader downloader = new Downloader("");
                 //Downloader downloader = new Downloader("NL");
-                if (downloader.DownloadXSourLinks(basepath))
-                    database.ProcessAirspaces(downloader.Links, ExportType.MsSql);
-                    //database.ProcessAirspaces(downloader.Links, ExportType.GeoJson);
+                if (downloader.DownloadXSourLinks(basepath, exportType))
+                {
+                    if (exportType == ExportType.MsSql)
+                    {
+                        EFDatabase database = new EFDatabase(basepath);
+                        database.ProcessAirspaces(downloader.Links, exportType);
+                        //database.ProcessAirspaces(downloader.Links, ExportType.GeoJson);
+                    }
+                    if (exportType == ExportType.MySql)
+                    {
+                        log.Info("MYSQL Export Selected");
+                    }
+                }
             }
             else
             {

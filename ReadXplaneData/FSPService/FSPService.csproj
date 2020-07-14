@@ -247,6 +247,7 @@
     <Compile Include="Models\Fir.cs" />
     <Compile Include="Models\Fix.cs" />
     <Compile Include="Models\Frequency.cs" />
+    <Compile Include="Models\Links.cs" />
     <Compile Include="Models\Navaid.cs" />
     <Compile Include="Models\Region.cs" />
     <Compile Include="Models\Runway.cs" />

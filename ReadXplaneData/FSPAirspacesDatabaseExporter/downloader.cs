@@ -1,5 +1,8 @@
-﻿using ConsoleReadXplaneData.EF;
+﻿using ConsoleReadXplaneData;
+using ConsoleReadXplaneData.EF;
 using FSPService.EF.Models;
+using FSPService.Models;
+using FSPService.MySql;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -19,46 +22,88 @@ namespace FSPAirspacesDatabaseExporter
             log = LogManager.GetCurrentClassLogger();
         }
 
-        private List<EFLink> links;
+        private List<Link> links;
         private String countryCode_Filter;
-        public List<EFLink> Links { get { return links; } }
+        public List<Link> Links { get { return links; } }
         private Logger log;
 
-        private void getLinksfromDB()
+        private List<Link> getLinksfromMSDB()
         {
+            List<Link> resLinks = new List<Link>();
+            List<EFLink> eflinks;
             using (AirNavDB db = new AirNavDB())
             {
                 if (countryCode_Filter.Length > 0)
                 {
-                    var links = from l in db.links
+                    eflinks = (from l in db.links
                                 where l.enabled == true
                                 && l.countrycode==countryCode_Filter
-                                select l;
+                                select l).ToList();
 
-                    this.links = links.ToList();
                 }
                 else
                 {
-                    var links = from l in db.links
+                    eflinks = (from l in db.links
                                 where l.enabled == true
-                                select l;
+                                select l).ToList();
 
-                    this.links = links.ToList();
                 }
+
+                var res = from ll in eflinks select new Link()
+                {
+                    country = ll.country,
+                    countrycode = ll.countrycode,
+                    openaiplink = ll.openaiplink,
+                    xsourlink = ll.xsourlink,
+                    enabled = ll.enabled,
+                    weblink = ll.weblink,
+                    openaip_enabled = ll.openaip_enabled,
+                    openaip_id = ll.openaip_id,
+                    local_filename = ll.local_filename
+                };
+                resLinks = res.ToList();
             }
+            return resLinks;
         }
 
-        public Boolean DownloadXSourLinks(String basePath)
+        private List<Link> getLinksFromMyDB(String basePath)
         {
-            getLinksfromDB();
-            foreach (EFLink link in links)
+            List<Link> resLinks;
+            MyDatabase myDB = new MyDatabase(basePath);
+
+            resLinks = myDB.GetLinks();
+
+            return resLinks;
+        }
+
+        private List<Link> getLinksfromDB(String basePath, ExportType exportType)
+        {
+            links = new List<Link>();
+            if (exportType==ExportType.MsSql)
             {
-                downloadFile(link, basePath);
+                links = getLinksfromMSDB();
+            }
+
+            if (exportType==ExportType.MySql)
+            {
+                links = getLinksFromMyDB(basePath);
+            }
+
+
+            return links;
+        }
+
+        public Boolean DownloadXSourLinks(String basePath, ExportType exportType)
+        {
+            List<Link> links = getLinksfromDB(basePath,exportType);
+            foreach (Link l in links)
+            {
+                downloadFile(l, basePath);
             }
 
 
             log.Info("*************************Download results **************************");
-            foreach(EFLink link in (from l in links where l.local_filename==null select l))
+            foreach(Link link in (from l in links where l.local_filename==null select l))
             {
                 log.Debug("Remote file not found for: {0}", link.xsourlink);
             }
@@ -66,7 +111,7 @@ namespace FSPAirspacesDatabaseExporter
             return (from l in links where l.local_filename == null select l).Count() == 0;
         }
 
-        private void downloadFile(EFLink url, string basePath)
+        private void downloadFile(Link url, string basePath)
         {
             String filename = Path.GetFileName(url.xsourlink);
             String downloadFile = basePath + filename;

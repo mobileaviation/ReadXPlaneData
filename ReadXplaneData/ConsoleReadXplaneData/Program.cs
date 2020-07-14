@@ -99,7 +99,7 @@ namespace FSPAirnavDatabaseExporter
                     case ExportType.MySql:
                         {
                             MyDatabase myDatabase = new MyDatabase(filesPath);
-                            myDatabase.Process(importTypes);
+                            myDatabase.Process(importTypes, clearDatabase);
                             break;
                         }
                     case ExportType.SqLiteDatabase:

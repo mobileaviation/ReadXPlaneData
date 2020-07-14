@@ -147,14 +147,14 @@ namespace ConsoleReadXplaneData.EF
 
         }
 
-        public void ProcessAirspaces(List<EFLink> links, ExportType exportTypes)
+        public void ProcessAirspaces(List<Link> links, ExportType exportTypes)
         {
             using (AirNavDB airportsDb = new AirNavDB())
             {
                 clearAirspacesTables(airportsDb);
             }
 
-            foreach (EFLink link in links)
+            foreach (Link link in links)
             {
                 Airspaces airspaces = new Airspaces();
                 AirspaceFileType fileType = (link.openaip_enabled)? AirspaceFileType.openaip : AirspaceFileType.openair;

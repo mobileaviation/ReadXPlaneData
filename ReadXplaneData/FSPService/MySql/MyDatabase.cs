@@ -12,6 +12,9 @@ using ConsoleReadXplaneData.Models;
 using System.Data;
 using FSPService.EF.Models;
 using ConsoleReadXplaneData.EF.Models;
+using ConsoleReadXplaneData;
+using FSPService.Models;
+using FSPService.Enums;
 
 namespace FSPService.MySql
 {
@@ -28,13 +31,20 @@ namespace FSPService.MySql
         private String basePath;
         private CsvDatabases csvDatabases;
 
-        public void Process(List<ImportTypes> importTypes)
+        private MySqlConnection getConnection()
+        {
+            String connStr = "server=localhost;port=3306;database=airnavdb;uid=root;password=@Ko218493";
+            return new MySqlConnection(connStr);
+        }
+
+        public void Process(List<ImportTypes> importTypes, bool _clearDatabase)
         {
             csvDatabases.ProcessCsvFiles(importTypes);
 
-            String connStr = "server=localhost;port=3306;database=airnavdb;uid=root;password=@Ko218493";
-            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlConnection conn = getConnection();
             conn.Open();
+
+            if (_clearDatabase) clearDatabase(conn);
 
             if (importTypes.Contains(ImportTypes.airports))
             {
@@ -78,6 +88,79 @@ namespace FSPService.MySql
             }
 
             conn.Close();
+        }
+
+        public void ProcessAirspaces(List<Link> links, ExportType exportTypes)
+        {
+            MySqlConnection conn = getConnection();
+            conn.Open();
+
+            clearAirspacesDatabase(conn);
+
+            foreach (Link link in links)
+            {
+                Airspaces airspaces = new Airspaces();
+                AirspaceFileType fileType = (link.openaip_enabled) ? AirspaceFileType.openaip : AirspaceFileType.openair;
+
+                airspaces.processAirspaceFile(link.local_filename, link.country, fileType);
+
+                InsertAirspaces(airspaces, conn);
+            }
+
+            conn.Close();
+        }
+
+        private void InsertAirspaces(Airspaces airspaces, MySqlConnection conn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Link> GetLinks()
+        {
+            MySqlConnection conn = getConnection();
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand(Commands.SelectLinks, conn);
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            List<Link> links = new List<Link>();
+
+            while(reader.Read())
+            {
+                Link l = new Link();
+                l.country = reader["country"].ToString();
+                l.countrycode = reader["countrycode"].ToString();
+                l.openaiplink = reader["openaiplink"].ToString();
+                l.xsourlink = reader["xsourlink"].ToString();
+                l.weblink = reader["weblink"].ToString();
+                l.enabled = Convert.ToBoolean(reader["enabled"].ToString());
+                l.openaip_enabled = Convert.ToBoolean(reader["openaip_enabled"].ToString());
+                links.Add(l);
+            }
+
+            conn.Close();
+            return links;
+        }
+
+        private void clearDatabase(MySqlConnection conn)
+        {
+            conn.Execute(Commands.DeleteAirports);
+            conn.Execute(Commands.DeleteCities);
+            conn.Execute(Commands.DeleteCountries);
+            conn.Execute(Commands.DeleteFirs);
+            conn.Execute(Commands.DeleteFixes);
+            conn.Execute(Commands.DeleteFrequencies);
+            conn.Execute(Commands.DeleteNavaids);
+            conn.Execute(Commands.DeleteRegions);
+            conn.Execute(Commands.DeleteRunways);
+        }
+
+        private void clearAirspacesDatabase(MySqlConnection conn)
+        {
+            conn.Execute(Commands.DeleteAtcStations);
+            conn.Execute(Commands.DeleteAirspaces);
+            conn.Execute(Commands.DeleteActivePeriods);
+            conn.Execute(Commands.DeleteActiveDays);
         }
 
         private void InsertCities(MySqlConnection conn)
